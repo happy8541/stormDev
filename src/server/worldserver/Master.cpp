@@ -136,12 +136,7 @@ int Master::Run()
     TC_LOG_INFO("server.worldserver", "%s (worldserver-daemon)", _FULLVERSION);
     TC_LOG_INFO("server.worldserver", " ");
     TC_LOG_INFO("server.worldserver", " A World of Warcraft Cataclsym 4.3.4 Emulator  ");
-    TC_LOG_INFO("server.worldserver", "       _/_/              _/          _/_/_/    _/_/    _/_/_/    _/_/_/_/  ");
-    TC_LOG_INFO("server.worldserver", "    _/    _/  _/  _/_/  _/  _/    _/        _/    _/  _/    _/  _/         ");
-    TC_LOG_INFO("server.worldserver", "   _/_/_/_/  _/_/      _/_/      _/        _/    _/  _/_/_/    _/_/_/      ");
-    TC_LOG_INFO("server.worldserver", "  _/    _/  _/        _/  _/    _/        _/    _/  _/    _/  _/           ");
-    TC_LOG_INFO("server.worldserver", " _/    _/  _/        _/    _/    _/_/_/    _/_/    _/    _/  _/_/_/_/   NG ");
-    TC_LOG_INFO("server.worldserver", " Arkania Community (c) 2016!                         <http://arkania.net/> ");
+    TC_LOG_INFO("server.worldserver", " StormscaleDevelopers (c) 2017                         <http://stormscale.ru/> ");
     TC_LOG_INFO("server.worldserver", " ");
     TC_LOG_INFO("server.worldserver", "<Ctrl-C> to stop.\n");
 
