@@ -487,6 +487,12 @@ void World::LoadConfigSettings(bool reload)
     rate_values[RATE_XP_QUEST]    = sConfigMgr->GetFloatDefault("Rate.XP.Quest", 1.0f);
     rate_values[RATE_XP_EXPLORE]  = sConfigMgr->GetFloatDefault("Rate.XP.Explore", 1.0f);
     rate_values[RATE_REPAIRCOST]  = sConfigMgr->GetFloatDefault("Rate.RepairCost", 1.0f);
+    m_bool_configs[CONFIG_VIP1] = sConfigMgr->GetBoolDefault("Item.Disableall", false);
+    m_bool_configs[CONFIG_VIP2] = sConfigMgr->GetBoolDefault("Item.Disable1", false);
+    m_bool_configs[CONFIG_VIP3] = sConfigMgr->GetBoolDefault("Item.Disable2", false);
+    m_bool_configs[CONFIG_VIP4] = sConfigMgr->GetBoolDefault("Item.Disable3", false);
+    m_bool_configs[CONFIG_VIP5] = sConfigMgr->GetBoolDefault("Item.Disable4", false);
+    m_bool_configs[CONFIG_VIP6] = sConfigMgr->GetBoolDefault("Item.Disable5", false);
     if (rate_values[RATE_REPAIRCOST] < 0.0f)
     {
         TC_LOG_ERROR("server.loading", "Rate.RepairCost (%f) must be >=0. Using 0.0 instead.", rate_values[RATE_REPAIRCOST]);
