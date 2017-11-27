@@ -56,7 +56,15 @@ void AddSC_Title_gossip_codebox();
 void AddSC_arenateamranks();
 void AddSC_npc_1v1arena();
 
-
+void AddSC_gm_hello();
+void AddSC_channel_factions();
+void AddSC_npc_titles();
+void AddSC_npc_other();
+void AddSC_npc_info(); 
+//void AddSC_Killstreak();
+//void AddSC_fast_arena_start();
+void AddSC_GossipNpc();
+void AddSC_Boss_Announcer();
 
 //Commands
 void AddSC_account_commandscript();
@@ -1818,13 +1826,19 @@ void AddCustomScripts()
     AddSC_morphs_npc();
     AddSC_NPC_VisualWeapon();
     AddSC_System_Censure();
- AddSC_Ingame_commandscript();
- AddSC_Title_gossip_codebox();
- AddSC_arenateamranks();
- AddSC_npc_1v1arena();
-
-
-    
+    AddSC_Ingame_commandscript();
+    AddSC_Title_gossip_codebox();
+    AddSC_arenateamranks();
+    AddSC_npc_1v1arena();
+    AddSC_gm_hello();
+    AddSC_channel_factions();
+    AddSC_npc_titles();
+    AddSC_npc_other();
+    AddSC_npc_info(); 
+    //AddSC_Killstreak();
+    //AddSC_fast_arena_start();
+    AddSC_Boss_Announcer();
+    AddSC_GossipNpc();
     //Bots
     AddSC_death_knight_bot();
     AddSC_druid_bot();
