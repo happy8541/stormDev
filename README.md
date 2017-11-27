@@ -1,5 +1,12 @@
-# Stormscale.Ru Fun Custom 4.3.4 code.
+# Stormscale.Ru Catalcysm Emulator Based on Arkcore-NG.
 # Main Developer : Inc, Declipe.
-# Join for us project Trinity Core 4.3.4 Fun Server.
-# We Need more C++ dev, base dev.
 
+Our team now start this project. We alway can tested this emulator on stormscale.ru
+
+Ahbot included.
+Playerbot included.
+
+
+All reporst please make a new issues.
+
+Donate for us, thx!
