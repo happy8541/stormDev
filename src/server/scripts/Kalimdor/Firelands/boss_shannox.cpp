@@ -1,19 +1,15 @@
 /*
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
- * (Script Coded by Naios, completed by Hellground).
- *
- * Script 90% done. TODO:
- * - Shannox controller to spawn shannox after a number of trash was killed.
- * - Bucket List positions.
- * - Live Testing needed.
- *
- * THIS particular file is NOT free software; third-party users should NOT 
- * have access to it, redistribute it or modify it. :)
+ * Copyright (C) 2017 Stormscale.Ru.Russian Game Server.
+ * Shannox First Boss Firelands.
+ * 
+ * Main Coded By Inc "Maksim Martynov"
+ * 
  */
 
+#include "ScriptPCH.h"
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
-#include "ObjectMgr.h"
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
 #include "SpellAuras.h"
@@ -29,18 +25,20 @@
 
 enum Shannox_Yells
 {
-    SAY_AGGRO                   = 0,
-    EMOTE_SOFT_ENRAGE           = 1,
-    SAY_ON_DOGS_FALL            = 2,
-    SAY_ON_DEAD                 = 3,
-    SAY_DOG_FOOD                = 4, // not realized
-    SAY_FETCH_SUPPER            = 5,
-    SAY_GO_FOR_THROAT           = 6,
-    SAY_BURN                    = 7,
-    SAY_ON_KILL                 = 8,
-    SAY_RIPLIMB                 = 9,
-    SAY_INTRO_SPECH_PART_ONE    = 10,
-    SAY_INTRO_SPECH_PART_TWO    = 11
+    SAY_AGGRO = 0,
+    EMOTE_SOFT_ENRAGE = 1,
+    SAY_ON_DOGS_FALL = 2,
+    SAY_ON_DEAD = 3,
+    SAY_DOG_FOOD = 4,
+    SAY_FETCH_SUPPER = 5,
+    SAY_GO_FOR_THROAT = 6,
+    SAY_BURN_ONE = 7,
+    SAY_ON_KILL_ONE = 8,
+    SAY_RIPLIMB = 9,
+    SAY_ON_KILL_TWO = 10,
+    SAY_BURN_TWO = 11,
+    SAY_INTRO_SPECH_PART_ONE = 12,
+    SAY_INTRO_SPECH_PART_TWO = 13
 };
 
 enum ePhases
@@ -59,59 +57,80 @@ enum Actions
     ACTION_START_EVENT_TO_RESPAWN_RIPLIMB, // Used by Riplimb when he dies to start Shannox respawn event.
 };
 
+enum AreaIds
+{
+    AREA_1 = 5764,
+    AREA_2 = 5821,
+    AREA_3 = 5766,
+    AREA_4 = 5791,
+    AREA_5 = 5765
+};
+
+enum Misc
+{
+    DATA_TRAPPED_PLAYER = 4,
+    DATA_TRAPPED_DOG = 5,
+};
+
 enum Spells
 {
     //Shannox
-    SPELL_ARCTIC_SLASH_10N      = 99931,
-    SPELL_ARCTIC_SLASH_25N      = 101201,
-    SPELL_ARCTIC_SLASH_10H      = 101202,
-    SPELL_ARCTIC_SLASH_25H      = 101203,
-    SPELL_BERSERK               = 47008,
-    SPELL_CALL_SPEAR            = 100663,
-    SPELL_HURL_SPEAR            = 100002, // Dummy Effect & Damage.
-    SPELL_HURL_SPEAR_SUMMON     = 99978,  // Summons Spear of Shannox.
+    SPELL_ARCTIC_SLASH_10N = 99931,
+    SPELL_ARCTIC_SLASH_25N = 101201,
+    SPELL_ARCTIC_SLASH_10H = 101202,
+    SPELL_ARCTIC_SLASH_25H = 101203,
+
+    SPELL_BERSERK = 47008,
+
+    SPELL_CALL_SPEAR = 100663,
+    SPELL_HURL_SPEAR = 100002, // Dummy Effect & Damage.
+    SPELL_HURL_SPEAR_SUMMON = 99978,  //Summons Spear of Shannox.
     SPELL_MAGMA_RUPTURE_SHANNOX = 99840,
-    SPELL_FRENZY_SHANNOX        = 100522,
+
+    SPELL_FRENZY_SHANNOX = 100522,
 
     // Riplimb
-    SPELL_LIMB_RIP              = 99832,
-    SPELL_DOGGED_DETERMINATION  = 101111,
+    SPELL_LIMB_RIP = 99832,
+    SPELL_DOGGED_DETERMINATION = 101111,
 
     // Rageface
-    SPELL_FACE_RAGE             = 99947,
-    SPELL_RAGE                  = 100415,
-    SPELL_FACE_RAGE_10N         = 100129, // Buff to remove damage aura.
-    SPELL_FACE_RAGE_25N         = 101212,
-    SPELL_FACE_RAGE_10H         = 101213,
-    SPELL_FACE_RAGE_25H         = 101214,
+    SPELL_FACE_RAGE = 99947,
+    SPELL_RAGE = 100415,
+
+    SPELL_FACE_RAGE_10N = 100129, // Buff to remove damage aura.
+    SPELL_FACE_RAGE_25N = 101212,
+    SPELL_FACE_RAGE_10H = 101213,
+    SPELL_FACE_RAGE_25H = 101214,
 
     // Both Dogs
-    SPELL_FRENZIED_DEVOLUTION   = 100064,
-    SPELL_FEEDING_FRENZY_H      = 100655,
-    SPELL_WARY_10N              = 100167, // Buff when the Dog goes into a Trap.
-    SPELL_WARY_25N              = 101215,
-    SPELL_WARY_10H              = 101216,
-    SPELL_WARY_25H              = 101217,
+    SPELL_FRENZIED_DEVOLUTION = 100064,
+    SPELL_FEEDING_FRENZY_H = 100655,
+
+    SPELL_WARY_10N = 100167, // Buff when the Dog goes into a Trap.
+    SPELL_WARY_25N = 101215,
+    SPELL_WARY_10H = 101216,
+    SPELL_WARY_25H = 101217,
 
     // Misc
-    SPELL_SEPERATION_ANXIETY    = 99835,
+    SPELL_SEPERATION_ANXIETY = 99835,
 
     //Spear Abilities
-    SPELL_MAGMA_FLARE           = 100495, // Inflicts Fire damage to enemies within 50 yards.
-    SPELL_MAGMA_RUPTURE         = 100003, // Calls forth magma eruptions to damage nearby foes. (Dummy Effect)
-    SPELL_MAGMA_RUPTURE_VISUAL  = 99841,
-    RED_TARGET_AUR              = 99988,
-    SPEAR_VISIBLE_ON_GROUND     = 100005,
-    SPEAR_VISIBLE_FETCH         = 100026,
+    SPELL_MAGMA_FLARE = 100495, // Inflicts Fire damage to enemies within 50 yards.
+    SPELL_MAGMA_RUPTURE = 100003, // Calls forth magma eruptions to damage nearby foes. (Dummy Effect)
+    SPELL_MAGMA_RUPTURE_VISUAL = 99841,
+    RED_TARGET_AUR = 99988,
+    SPEAR_VISIBLE_ON_GROUND = 100005,
+    SPEAR_VISIBLE_FETCH = 100026,
 
     //Trap Abilities
     SPELL_SUMMON_CRYSTAL_PRISON = 99836,
-    CRYSTAL_PRISON_EFFECT       = 99837,
+    CRYSTAL_PRISON_EFFECT = 99837,
     SPELL_SUMMON_IMOLATION_TRAP = 99839,
-    SPELL_IMMOLATION_TRAP_10N   = 99838, 
-    SPELL_IMMOLATION_TRAP_25N   = 101208,
-    SPELL_IMMOLATION_TRAP_10H   = 101209,
-    SPELL_IMMOLATION_TRAP_25H   = 101210
+
+    SPELL_IMMOLATION_TRAP_10N = 99838,
+    SPELL_IMMOLATION_TRAP_25N = 101208,
+    SPELL_IMMOLATION_TRAP_10H = 101209,
+    SPELL_IMMOLATION_TRAP_25H = 101210
 };
 
 enum Events
@@ -291,7 +310,7 @@ public:
 
         void KilledUnit(Unit* /*victim*/)
         {
-            Talk(SAY_ON_KILL);
+           Talk(RAND(SAY_ON_KILL_ONE, SAY_ON_KILL_TWO));
         }
 
         void DoAction(int32 action)
@@ -372,6 +391,30 @@ public:
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
+			switch (me->GetAreaId())
+                    {
+                        case AREA_1:
+                            if (!areas[0])
+                                areas[0] = true;
+                            break;
+                        case AREA_2:
+                            if (!areas[1])
+                                areas[1] = true;
+                            break;
+                        case AREA_3:
+                            if (!areas[2])
+                                areas[2] = true;
+                            break;
+                        case AREA_4:
+                            if (!areas[3])
+                                areas[3] = true;
+                            break;
+                        case AREA_5:
+                            if (!areas[4])
+                                areas[4] = true;
+                            break;
+                    }
+
 
             events.Update(diff);
 
@@ -444,27 +487,34 @@ public:
                     { 
                         // Cast Magma Rupture when Ripclimb is Death
                         DoCastVictim(SPELL_MAGMA_RUPTURE_SHANNOX);
-                        me->LoadEquipment(0, true);
-                        me->SummonCreature(NPC_SHANNOX_SPEAR,me->GetPositionX()-(std::cos(float(me->GetOrientation()))+6),me->GetPositionY()-(std::sin(float(me->GetOrientation()))+6),me->GetPositionZ());
-                        events.ScheduleEvent(EVENT_SUMMON_SPEAR, 4000);
-                        events.ScheduleEvent(EVENT_HURL_SPEAR_OR_MAGMA_RUPTURE, 42000);
+                                    me->LoadEquipment(0, true);
+                                    me->SummonCreature(NPC_SHANNOX_SPEAR,
+                                            me->GetPositionX() - (cos(float(me->GetOrientation())) + 6),
+                                            me->GetPositionY() - (sin(float(me->GetOrientation())) + 6),
+                                            me->GetPositionZ());
+                                    events.ScheduleEvent(EVENT_SUMMON_SPEAR, 4000);
+                                    events.ScheduleEvent(EVENT_HURL_SPEAR_OR_MAGMA_RUPTURE, 42000);
                     }
                     else
                     {
                         // Throw Spear if Riplimb is Alive and Shannox has the Spear
-                        if (uiPhase == PHASE_SHANNOX_HAS_SPEER && GetRiplimb())
-                        {
-                            events.ScheduleEvent(EVENT_HURL_SPEAR_OR_MAGMA_RUPTURE, 42000);
+                       if (uiPhase == PHASE_SHANNOX_HAS_SPEER && GetRiplimb())
+                                    {
+                                        events.ScheduleEvent(EVENT_HURL_SPEAR_OR_MAGMA_RUPTURE, 42000);
 
-                            me->SummonCreature(NPC_FAKE_SHANNOX_SPEAR,GetRiplimb()->GetPositionX()+irand(-30,30),GetRiplimb()->GetPositionY()+irand(-30,30),GetRiplimb()->GetPositionZ());
+                                        me->SummonCreature(NPC_FAKE_SHANNOX_SPEAR,
+                                                GetRiplimb()->GetPositionX() + irand(-30, 30),
+                                                GetRiplimb()->GetPositionY() + irand(-30, 30),
+                                                GetRiplimb()->GetPositionZ());
 
-                            if (me->FindNearestCreature(NPC_FAKE_SHANNOX_SPEAR, 5000.0f, true))
-                                events.ScheduleEvent(EVENT_HURL_SPEAR, 2000);
+                                        if (Creature *fakeSpear = me->FindNearestCreature(NPC_FAKE_SHANNOX_SPEAR,
+                                                5000.0f, true))
+                                            events.ScheduleEvent(EVENT_HURL_SPEAR, 2000);
 
-                            uiPhase = PHASE_SPEAR_ON_THE_GROUND;
-                            //DoCast(SPELL_HURL_SPEAR_DUMMY_SCRIPT);
+                                        uiPhase = PHASE_SPEAR_ON_THE_GROUND;
+                                        //DoCast(SPELL_HURL_SPEAR_DUMMY_SCRIPT);
 
-                            Talk(SAY_BURN);
+                                        Talk(RAND(SAY_BURN_ONE, SAY_BURN_TWO));
                         }
                         else
                             events.ScheduleEvent(EVENT_HURL_SPEAR_OR_MAGMA_RUPTURE, 10000);
@@ -549,6 +599,7 @@ public:
 
         private:
             uint32 uiPhase;
+			bool areas[5];
     };
 };
 
@@ -569,8 +620,11 @@ public:
         npc_ragefaceAI(Creature* creature) : ScriptedAI(creature)
         {
             instance = me->GetInstanceScript();
+                    me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
+                    me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
+                    me->ApplySpellImmune(0, IMMUNITY_ID, 56222, true); // Dark Command
 
-            Reset();
+                    Reset();
         }
 
         InstanceScript* instance;
@@ -590,18 +644,35 @@ public:
         void JustDied(Unit* /*victim*/)
         {
             if (GetShannox())
-            {
-                GetShannox()->HasAura(SPELL_FRENZY_SHANNOX) ? GetShannox()->GetAura(SPELL_FRENZY_SHANNOX)->SetStackAmount(2) : DoCast(GetShannox(),SPELL_FRENZY_SHANNOX);
-                GetShannox()->AI()->Talk(SAY_ON_DOGS_FALL);
-                GetShannox()->AI()->Talk(EMOTE_SOFT_ENRAGE);
-            }
+                    {
+                        GetShannox()->HasAura(SPELL_FRENZY_SHANNOX) ?
+                                GetShannox()->GetAura(SPELL_FRENZY_SHANNOX)->SetStackAmount(2) :
+                                DoCast(GetShannox(), SPELL_FRENZY_SHANNOX);
+                        GetShannox()->MonsterTextEmote(SAY_ON_DOGS_FALL, 0, true);
+                        GetShannox()->MonsterTextEmote(EMOTE_SOFT_ENRAGE, 0, true);
+                    }
+                    if (instance)
+                    {
+                        instance->SetData(DATA_SHANNOX, DONE);
+                        instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me); // Remove Frame
+                    }
         }
 
         void EnterCombat(Unit* /*who*/)
         {
+			
             // Not tauntable.
-            me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
-            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
+           if (instance)
+                    {
+                        instance->SetData(DATA_SHANNOX, IN_PROGRESS);
+                        instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me); // Remove Frame
+                    }
+
+                    if (Creature* shannox = me->FindNearestCreature(NPC_SHANNOX, 250.0f, true))
+                    {
+                        if (Unit* player = me->FindNearestPlayer(250.0f, true))
+                            shannox->AI()->AttackStart(player);
+                    }
 
             me->GetMotionMaster()->MoveIdle();
             me->GetMotionMaster()->MoveChase(me->GetVictim());
