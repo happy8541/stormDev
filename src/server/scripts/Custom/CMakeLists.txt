@@ -15,6 +15,9 @@ Custom/anti_divulgador.cpp
 Custom/npc_morph.cpp
 Custom/npc_visual_weapon.cpp
 Custom/duelReset.cpp
+Custom/npc_titulos.cpp
+Custom/npc_top_ranks_arena.cpp
+Custom/comando_shop.cpp
 
 
 )

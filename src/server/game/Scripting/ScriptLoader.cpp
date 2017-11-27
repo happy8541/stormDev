@@ -51,6 +51,10 @@ void AddSC_CdReset();
 void AddSC_morphs_npc();
 void AddSC_NPC_VisualWeapon();
 void AddSC_System_Censure();
+void AddSC_Ingame_commandscript();
+void AddSC_Title_gossip_codebox();
+void AddSC_arenateamranks();
+
 
 
 //Commands
@@ -1781,6 +1785,10 @@ void AddBattlegroundScripts()
     void AddSC_morphs_npc();
     void AddSC_NPC_VisualWeapon();
     void AddSC_System_Censure();
+void AddSC_Ingame_commandscript();
+void AddSC_Title_gossip_codebox();
+void AddSC_arenateamranks();
+
     
 
 //Bots
@@ -1809,6 +1817,10 @@ void AddCustomScripts()
     AddSC_morphs_npc();
     AddSC_NPC_VisualWeapon();
     AddSC_System_Censure();
+ AddSC_Ingame_commandscript();
+ AddSC_Title_gossip_codebox();
+ AddSC_arenateamranks();
+
 
     
     //Bots
