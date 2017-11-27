@@ -1313,6 +1313,22 @@ class Player : public Unit, public GridObject<Player>
         void SetCommandStatusOn(uint32 command) { _activeCheats |= command; }
         void SetCommandStatusOff(uint32 command) { _activeCheats &= ~command; }
 
+       // PlayedTimeReward
+        uint32 ptr_Interval;
+        uint32 ptr_Money;
+        uint32 ptr_Honor;
+        uint32 ptr_Arena;
+        uint32 ptr_item1;
+        uint32 ptr_item2;
+        uint32 ptr_item3;
+        uint32 ptr_item4;
+        uint32 ptr_item5;
+        uint32 ptr_item1id;
+        uint32 ptr_item2id;
+        uint32 ptr_item3id;
+        uint32 ptr_item4id;
+        uint32 ptr_item5id;
+
         // Played Time Stuff
         time_t m_logintime;
         time_t m_Last_tick;

@@ -3428,4 +3428,29 @@ Bot.PvP = 1
 
 #
 ###################################################################################################
-
+CONFIG_ARENA_1V1_ENABLE = 1
+CONFIG_ARENA_1V1_MIN_LEVEL = 10
+CONFIG_ARENA_1V1_BLOCK_FORBIDDEN_TALENTS = 1
+CONFIG_ARENA_1V1_COSTS = 0
+PlayedTimeReward.Interval = 300000
+PlayedTimeReward.Money    = 50000
+#PlayedTimeReward.Honor    = 500
+#PlayedTimeReward.Arena    = 500
+PlayedTimeReward.item1id  = 0
+PlayedTimeReward.item2id  = 0
+PlayedTimeReward.item3id  = 0
+PlayedTimeReward.item4id  = 0 
+PlayedTimeReward.item5id  = 49426
+PlayedTimeReward.item1    = 0
+PlayedTimeReward.item2    = 0
+PlayedTimeReward.item3    = 0
+PlayedTimeReward.item4    = 0
+PlayedTimeReward.item5    = 100
+Item.Disableall           = 0
+Item.Disable1             = 1
+Item.Disable2             = 1
+Item.Disable3             = 1
+Item.Disable4             = 1
+Item.Disable5             = 0
+#
+###################################################################################################

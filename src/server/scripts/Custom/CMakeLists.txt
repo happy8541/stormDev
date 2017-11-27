@@ -18,6 +18,7 @@ Custom/duelReset.cpp
 Custom/npc_titulos.cpp
 Custom/npc_top_ranks_arena.cpp
 Custom/comando_shop.cpp
+Custom/npc_arena1v1.cpp
 
 
 )
