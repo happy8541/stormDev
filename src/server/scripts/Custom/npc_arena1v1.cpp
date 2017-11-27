@@ -43,7 +43,8 @@ public:
 		Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(BATTLEGROUND_AA);
 		if (!bg)
 		{
-			sLog->outError(LOG_FILTER_SQL, "Battleground: template bg (all arenas) not found");
+			TC_LOG_ERROR("Arena", "Battleground: template bg (all arenas) not found");
+			//sLog->outError(LOG_FILTER_SQL, "Battleground: template bg (all arenas) not found");
 			return false;
 		}
 

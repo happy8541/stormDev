@@ -54,6 +54,7 @@ void AddSC_System_Censure();
 void AddSC_Ingame_commandscript();
 void AddSC_Title_gossip_codebox();
 void AddSC_arenateamranks();
+void AddSC_npc_1v1arena();
 
 
 
@@ -1820,6 +1821,7 @@ void AddCustomScripts()
  AddSC_Ingame_commandscript();
  AddSC_Title_gossip_codebox();
  AddSC_arenateamranks();
+ AddSC_npc_1v1arena();
 
 
     
