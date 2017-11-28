@@ -1,17 +1,24 @@
 /*
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2016 DeathCore <http://www.noffearrdeathproject.org/>
  *
- * Script done: 95%. ToDo: 
- * - Script remaining spells. See each boss notes on ToDo.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
  *
- * This file is NOT free software. Third-party users can NOT redistribute 
- * it or modify it. If you find it, you are either hacking something, or very 
- * lucky (presuming someone else managed to hack it).
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "ScriptPCH.h"
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
-#include "ObjectMgr.h"
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
 #include "SpellAuras.h"
@@ -308,7 +315,6 @@ enum Phases // Boss Phases.
 
 #define healthController RAID_MODE<uint32>(23190840, 73008200, 42430648, 125058752) // Controller health on different diffs.
 
-// 43691
 class npc_ascendant_council_controller : public CreatureScript // 43691
 {
 public:
@@ -353,6 +359,10 @@ public:
                 arion->SetHealth(healthController / 4);
                 terrastra->SetMaxHealth(healthController / 4);
                 terrastra->SetHealth(healthController / 4);
+                feludius->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
+                ignacious->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
+                arion->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
+                terrastra->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
             }
 
             summons.DespawnAll(); // Despawn Monstrosity if exists.
@@ -399,7 +409,7 @@ public:
                 instance->SetData(DATA_ASCENDANT_COUNCIL, FAIL);
         }
 
-        void EnterCombat(Unit* /*who*/)
+        void EnterCombat(Unit* who)
         {
             //DoCast(me, SPELL_PACIFY_SELF);
             started = false;
@@ -408,7 +418,7 @@ public:
                 instance->SetData(DATA_ASCENDANT_COUNCIL,IN_PROGRESS);
         }
 
-        void DoAction(int32 action)
+        void DoAction(const int32 action)
         {
             switch(action)
             {
@@ -444,7 +454,7 @@ public:
                     playr->AddAura(SPELL_ELEMENTAL_STASIS, playr); // Trap all players while Monstrosity spawns.
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             if (!instance)
                 return;
@@ -471,6 +481,10 @@ public:
                             ignacious->RemoveAllAuras();
                             arion->RemoveAllAuras();
                             terrastra->RemoveAllAuras();
+                            feludius->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
+                            ignacious->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
+                            arion->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
+                            terrastra->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NON_ATTACKABLE);
                             feludius->SetDisplayId(MODEL_INVISIBLE);
                             feludius->NearTeleportTo(-982.346f, -567.829f, 831.902f, 3.703f);
                             feludius->GetMotionMaster()->Clear();
@@ -580,7 +594,6 @@ Monstrosity Summon Pos:
 -1008.824f, -582.617f, 831.902f, 0.026f. - Controller event. - DONE.
 */
 
-// 43687
 class boss_feludius : public CreatureScript
 {
     public:
@@ -725,7 +738,7 @@ class boss_feludius : public CreatureScript
                 _JustDied();
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || !phase)
                     return;
@@ -792,7 +805,6 @@ class boss_feludius : public CreatureScript
     }
 };
 
-// 43686
 class boss_ignacious : public CreatureScript
 {
     public:
@@ -950,7 +962,7 @@ class boss_ignacious : public CreatureScript
                 _JustDied();
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || !phase)
                     return;
@@ -1043,7 +1055,6 @@ class boss_ignacious : public CreatureScript
     }
 };
 
-// 43688
 class boss_arion : public CreatureScript
 {
     public:
@@ -1172,7 +1183,7 @@ class boss_arion : public CreatureScript
                 _JustDied();
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || !phase)
                     return;
@@ -1233,7 +1244,7 @@ class boss_arion : public CreatureScript
                             break;
 
                         case EVENT_LIGHTNING_BLAST:
-                            DoCastVictim(SPELL_LIGHTNING_BLAST);
+                            DoCast(me->GetVictim(), SPELL_LIGHTNING_BLAST);
                             break;
 
                         case EVENT_THUNDERSHOCK:
@@ -1273,7 +1284,6 @@ class boss_arion : public CreatureScript
     }
 };
 
-// 43689
 class boss_terrastra : public CreatureScript
 {
     public:
@@ -1406,7 +1416,7 @@ class boss_terrastra : public CreatureScript
                 _JustDied();
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || !phase)
                     return;
@@ -1476,7 +1486,6 @@ class boss_terrastra : public CreatureScript
     }
 };
 
-// 43735
 class boss_monstrosity : public CreatureScript
 {
     public:
@@ -1515,8 +1524,9 @@ class boss_monstrosity : public CreatureScript
                 Creature* ignacious = me->FindNearestCreature(NPC_IGNACIOUS, 500.0f, true); 
                 Creature* arion = me->FindNearestCreature(NPC_ARION, 500.0f, true); 
                 Creature* terrastra = me->FindNearestCreature(NPC_TERRASTRA, 500.0f, true);   
+				Creature* controller = me->FindNearestCreature(NPC_ASCENDANT_CONTROLLER, 1000.0f, true);
   
-                if (feludius && ignacious && arion && terrastra) // Check to prevent any damn crashes.
+                if (feludius && ignacious && arion && terrastra && controller) // Check to prevent any damn crashes.
                 {
                     feludius->SetDisplayId(MODEL_FELUDIUS);
                     terrastra->SetDisplayId(MODEL_TERRASTRA);
@@ -1530,6 +1540,8 @@ class boss_monstrosity : public CreatureScript
                     terrastra->AI()->EnterEvadeMode();
                     arion->AI()->EnterEvadeMode();
                     ignacious->AI()->EnterEvadeMode();
+					controller->AI()->EnterEvadeMode();
+					
                     me->DespawnOrUnsummon();
                 }
 
@@ -1600,7 +1612,7 @@ class boss_monstrosity : public CreatureScript
                     controller->SetHealth(controller->GetHealth() - damage);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -1657,7 +1669,7 @@ class boss_monstrosity : public CreatureScript
                             SelectTargetList(targets, RAID_MODE(5, 10, 8, 15), SELECT_TARGET_RANDOM, 500.0f, true);
                             if (!targets.empty())
                             for (std::list<Unit*>::iterator itr = targets.begin(); itr != targets.end(); ++itr)
-								if (Unit* raider = ObjectAccessor::GetUnit(*me, (*itr)->GetGUID()))
+                            if (Unit* raider = ObjectAccessor::GetUnit(*me, (*itr)->GetGUID()))
                             if (raider->GetTypeId() == TYPEID_PLAYER)
                                 me->SummonCreature(NPC_LAVA_SEED, raider->GetPositionX(), raider->GetPositionY(), raider->GetPositionZ(), 0, TEMPSUMMON_TIMED_DESPAWN, RAID_MODE(6000, 5000, 6000, 5000));
                         }
@@ -1672,7 +1684,7 @@ class boss_monstrosity : public CreatureScript
                             SelectTargetList(targets, RAID_MODE(1, 3, 1, 3), SELECT_TARGET_RANDOM, 500.0f, true);
                             if (!targets.empty())
                                 for (std::list<Unit*>::iterator itr = targets.begin(); itr != targets.end(); ++itr)
-									if (Unit* raider = ObjectAccessor::GetUnit(*me, (*itr)->GetGUID()))
+                            if (Unit* raider = ObjectAccessor::GetUnit(*me, (*itr)->GetGUID()))
                             if (raider->GetTypeId() == TYPEID_PLAYER)
                                 //me->SummonCreature(NPC_GRAVITY_CRUSH, raider->GetPositionX(), raider->GetPositionY(), raider->GetPositionZ(), 0, TEMPSUMMON_TIMED_DESPAWN, 6500);
                                 me->AddAura(SPELL_GRAVITY_CRUSH, raider);
@@ -1698,11 +1710,10 @@ class boss_monstrosity : public CreatureScript
     }
 };
 
-// 44201
 class npc_feludius_waterbomb : public CreatureScript // 44201
 {
     public:
-        npc_feludius_waterbomb() : CreatureScript("npc_feludius_waterbomb") { }
+        npc_feludius_waterbomb() : CreatureScript("npc_feludius_waterbomb") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -1724,7 +1735,7 @@ class npc_feludius_waterbomb : public CreatureScript // 44201
                 events.ScheduleEvent(EVENT_WATER_BOMB_EXPLODE, 100);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -1745,11 +1756,10 @@ class npc_feludius_waterbomb : public CreatureScript // 44201
         };
 };
 
-// 44747
 class npc_arion_callwinds : public CreatureScript // 44747
 {
     public:
-        npc_arion_callwinds() : CreatureScript("npc_arion_callwinds") { }
+        npc_arion_callwinds() : CreatureScript("npc_arion_callwinds") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -1774,7 +1784,7 @@ class npc_arion_callwinds : public CreatureScript // 44747
                 events.ScheduleEvent(EVENT_CHECK_WINDS_PLAYER, 1000);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -1797,11 +1807,10 @@ class npc_arion_callwinds : public CreatureScript // 44747
         };
 };
 
-// 44824
 class npc_terrastra_gravitywell : public CreatureScript // 44824
 {
     public:
-        npc_terrastra_gravitywell() : CreatureScript("npc_terrastra_gravitywell") { }
+        npc_terrastra_gravitywell() : CreatureScript("npc_terrastra_gravitywell") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -1822,17 +1831,16 @@ class npc_terrastra_gravitywell : public CreatureScript // 44824
 
             InstanceScript* instance;
 
-            void Reset() { }
+            void Reset() {}
 
-            void UpdateAI(uint32 /*diff*/) { }
+            void UpdateAI(const uint32 diff) {}
         };
 };
 
-// 45452
 class npc_monstrosity_liquid_ice : public CreatureScript // 45452
 {
     public:
-        npc_monstrosity_liquid_ice() : CreatureScript("npc_monstrosity_liquid_ice") { }
+        npc_monstrosity_liquid_ice() : CreatureScript("npc_monstrosity_liquid_ice") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -1856,7 +1864,7 @@ class npc_monstrosity_liquid_ice : public CreatureScript // 45452
                 events.ScheduleEvent(EVENT_LIQUID_ICE_GROW, 3000);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -1879,11 +1887,10 @@ class npc_monstrosity_liquid_ice : public CreatureScript // 45452
         };
 };
 
-// 48538
 class npc_monstrosity_lava_seed : public CreatureScript // 48538
 {
     public:
-        npc_monstrosity_lava_seed() : CreatureScript("npc_monstrosity_lava_seed") { }
+        npc_monstrosity_lava_seed() : CreatureScript("npc_monstrosity_lava_seed") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -1907,7 +1914,7 @@ class npc_monstrosity_lava_seed : public CreatureScript // 48538
                 events.ScheduleEvent(EVENT_SEED_EXPLODE, 4000);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -1931,11 +1938,10 @@ class npc_monstrosity_lava_seed : public CreatureScript // 48538
 
 // HEROIC NPC-s.
 
-// 49432
 class npc_ignacious_flame_strike : public CreatureScript // 49432
 {
     public:
-        npc_ignacious_flame_strike() : CreatureScript("npc_ignacious_flame_strike") { }
+        npc_ignacious_flame_strike() : CreatureScript("npc_ignacious_flame_strike") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -1959,7 +1965,7 @@ class npc_ignacious_flame_strike : public CreatureScript // 49432
                 events.ScheduleEvent(EVENT_FLAME_STRIKE_DAMAGE, 5000);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -1980,11 +1986,10 @@ class npc_ignacious_flame_strike : public CreatureScript // 49432
         };
 };
 
-// 49518
 class npc_feludius_frozen_orb : public CreatureScript // 49518
 {
     public:
-        npc_feludius_frozen_orb() : CreatureScript("npc_feludius_frozen_orb") { }
+        npc_feludius_frozen_orb() : CreatureScript("npc_feludius_frozen_orb") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -2011,7 +2016,7 @@ class npc_feludius_frozen_orb : public CreatureScript // 49518
                 events.ScheduleEvent(EVENT_FROZEN_DESPAWN, 35000);
             }
 
-            void UpdateAI(uint32 diff)
+            void UpdateAI(const uint32 diff)
             {
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -2050,7 +2055,6 @@ class npc_feludius_frozen_orb : public CreatureScript // 49518
         };
 };
 
-// 82699
 class spell_feludius_waterbomb : public SpellScriptLoader // 82699.
 {
 public:
@@ -2060,7 +2064,7 @@ public:
     {
         PrepareSpellScript(spell_feludius_waterbombSpellScript);
 
-        bool Validate(SpellInfo const* /*spellEntry*/)
+        bool Validate(SpellInfo const * spellEntry)
         {
             return true;
         }
@@ -2070,13 +2074,13 @@ public:
             return true;
         }
 
-        void HandleDummy(SpellEffIndex /*effIndex*/)
+        void HandleDummy(SpellEffIndex effIndex)
         {
             std::list<Unit*> targets;
             GetCaster()->GetAI()->SelectTargetList(targets, GetCaster()->GetInstanceScript()->instance->Is25ManRaid() ? 5 : 2, SELECT_TARGET_RANDOM, 150.0f, true);
             if (!targets.empty())
                 for (std::list<Unit*>::iterator itr = targets.begin(); itr != targets.end(); ++itr)
-					if (Unit* temp = ObjectAccessor::GetUnit(*GetCaster(), (*itr)->GetGUID()))
+                    if (Unit* temp = ObjectAccessor::GetUnit(*GetCaster(), (*itr)->GetGUID()))
                         if (temp->GetTypeId() == TYPEID_PLAYER)
                             GetCaster()->SummonCreature(NPC_WATER_BOMB, temp->GetPositionX(), temp->GetPositionY(), temp->GetPositionZ(), 0, TEMPSUMMON_TIMED_DESPAWN, 500);
         }
@@ -2093,7 +2097,6 @@ public:
     }
 };
 
-// 82746 92506 92507 92508
 class spell_feludius_glaciate: public SpellScriptLoader // 82746
 {
 public:
@@ -2118,7 +2121,7 @@ public:
                 SetHitDamage(10000);
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (GetHitUnit()->HasAura(SPELL_WATERLOGGED))
                 GetCaster()->AddAura(SPELL_FROZEN, GetHitUnit()); // Special info.
@@ -2137,7 +2140,6 @@ public:
     }
 };
 
-// 83087
 class spell_arion_disperse: public SpellScriptLoader // 83087
 {
 public:
@@ -2148,7 +2150,7 @@ public:
     {
         PrepareSpellScript(spell_arion_disperseSpellScript);
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
                 GetCaster()->CastSpell(GetHitUnit(), SPELL_DISPERSE_TELEPORT, true); // Teleport.
         }
@@ -2165,7 +2167,6 @@ public:
     }
 };
 
-// 83067 92469 92470 92471
 class spell_arion_thundershock: public SpellScriptLoader // 83067
 {
 public:
@@ -2205,7 +2206,6 @@ public:
     }
 };
 
-// 83565 92544 92545 92546
 class spell_terrastra_quake: public SpellScriptLoader // 83565
 {
 public:

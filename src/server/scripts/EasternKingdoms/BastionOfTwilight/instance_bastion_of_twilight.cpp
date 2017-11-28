@@ -1,16 +1,26 @@
 /*
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2016 DeathCore <http://www.noffearrdeathproject.org/>
  *
- * This file is NOT free software. Third-party users can NOT redistribute 
- * it or modify it. If you find it, you are either hacking something, or very 
- * lucky (presuming someone else managed to hack it).
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "ScriptPCH.h"
+#include "bastion_of_twilight.h"
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
 #include "ScriptedCreature.h"
-#include "bastion_of_twilight.h"
-#include "ObjectMgr.h"
 #include "Map.h"
 #include "PoolMgr.h"
 
@@ -98,58 +108,58 @@ class instance_bastion_of_twilight : public InstanceMapScript
                 return false;
             }
 
-            void OnCreatureCreate(Creature* creature)
+            void OnCreatureCreate(Creature* pCreature)
             {
-                switch (creature->GetEntry())
+                switch (pCreature->GetEntry())
                 {
                     case NPC_HALFUS_WORMBREAKER:
-                        halfus = creature->GetGUID();
+                        halfus = pCreature->GetGUID();
                         break;
                     case NPC_VALIONA_BOT:
-                        valiona = creature->GetGUID();
+                        valiona = pCreature->GetGUID();
                         break;
                     case NPC_THERALION_BOT:
-                        theralion = creature->GetGUID();
+                        theralion = pCreature->GetGUID();
                         break;
                     case NPC_ASCENDANT_COUNCIL:
-                        ascendantcouncil = creature->GetGUID();
+                        ascendantcouncil = pCreature->GetGUID();
                         break;
                     case NPC_FELUDIUS:
-                        feludius = creature->GetGUID();
+                        feludius = pCreature->GetGUID();
                         break;
                     case NPC_IGNACIOUS:
-                        ignacious = creature->GetGUID();
+                        ignacious = pCreature->GetGUID();
                         break;
                     case NPC_ARION:
-                        arion = creature->GetGUID();
+                        arion = pCreature->GetGUID();
                         break;
                     case NPC_TERRASTRA:
-                        terrastra = creature->GetGUID();
+                        terrastra = pCreature->GetGUID();
                         break;
                     case NPC_ELEMENTIUM_MONSTROSITY:
-                        monstrosity = creature->GetGUID();
+                        monstrosity = pCreature->GetGUID();
                         break;
                     case NPC_CHOGALL:
-                        chogall = creature->GetGUID();
+                        chogall = pCreature->GetGUID();
                         break;
                     case NPC_SINESTRA:
-                        sinestra = creature->GetGUID();
+                        sinestra = pCreature->GetGUID();
                         break;
                     case NPC_CHOGALL_HALFUS:
-                        chogallHalfus = creature->GetGUID();
+                        chogallHalfus = pCreature->GetGUID();
                         break;
                     case NPC_CHOGALL_DRAGONS:
-                        chogallValiona = creature->GetGUID();
+                        chogallValiona = pCreature->GetGUID();
                         break;
                     case NPC_CHOGALL_COUNCIL:
-                        chogallCouncil = creature->GetGUID();
+                        chogallCouncil = pCreature->GetGUID();
                         break;
                 }
             }
 
             void OnGameObjectCreate(GameObject* go)
             {
-               
+                /*switch(go->GetEntry()) { }*/
             }
 
             void SetData(uint32 type, uint32 data)
@@ -214,7 +224,7 @@ class instance_bastion_of_twilight : public InstanceMapScript
                         break;
                 }
 
-                return 0;
+                return NULL;
             }
 
             bool SetBossState(uint32 data, EncounterState state) 

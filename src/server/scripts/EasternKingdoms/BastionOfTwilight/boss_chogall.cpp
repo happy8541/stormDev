@@ -1,19 +1,25 @@
 /*
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2016 DeathCore <http://www.noffearrdeathproject.org/>
  *
- * Script 99% done. TODO:
- * - Fix falling through floor.
- * - Wrong spells for orders on heroic? to check no visuals etc.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
  *
- * This file is NOT free software. Third-party users can NOT redistribute 
- * it or modify it. If you find it, you are either hacking something, or very 
- * lucky (presuming someone else managed to hack it).
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ScriptMgr.h"
-#include "ScriptedCreature.h"
+#include "ScriptPCH.h"
 #include "Vehicle.h"
 #include "Unit.h"
+#include "ScriptMgr.h"
+#include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 #include "ScriptedEscortAI.h"
 #include "Cell.h"
@@ -74,10 +80,10 @@ enum Spells
     SPELL_CONVERSION     = 91303, // Script effect for 25 player only (add below spell to multiple targets?).
     SPELL_WORSHIPPING    = 91317, // "Worshipping Cho'gall" aura - triggers 91331 on cho'gall, needs condition.
 
-    /** Fury of Cho'gall – Cho'gall blasts his current target, 34125 to 35875 Shadow and 34125 to 35875 Physical damage, ++ Physical and Shadow damage taken by 20% for 1 min. **/
+    /** Fury of Cho'gall - Cho'gall blasts his current target, 34125 to 35875 Shadow and 34125 to 35875 Physical damage, ++ Physical and Shadow damage taken by 20% for 1 min. **/
     SPELL_FURY_OF_CHOGALL = 82524, // On tank only.
 
-    /** Flame's Orders – Cho'gall calls forth a Fire elemental and absorbs the elemental into his Twilight Hammer, empowering it with Flaming Destruction. **/
+    /** Flame's Orders - Cho'gall calls forth a Fire elemental and absorbs the elemental into his Twilight Hammer, empowering it with Flaming Destruction. **/
     // On Heroic difficulty Cho'gall gains one additional stack of Flaming Destruction for each 10% health remaining on the elemental when it is absorbed.
     SPELL_FLAME_ORDERS   = 87579, // Summons 47020 - Fire Portal in 15 yards.
     SPELL_F_O_PERIODIC   = 87581, // Trigger above every 50 seconds. - NEED THIS!!!
@@ -89,7 +95,7 @@ enum Spells
     // SPELL_FLAME_ORDERS_2  = 81171, // Summons 43393 - Fire Portal in 15 yards, has no periodic trigger ??! - WTF IS THIS? Not needed...
     // SPELL_FO_SUMMON_2     = 81186, // Summons Fire Elemental very SMALL, 43406 ?! - WTF IS THIS? Not needed...
 
-    /** Shadow's Orders – Cho'gall calls forth a Shadow elemental and absorbs the elemental into his Twilight Hammer, imbuing it with Empowered Shadows. **/
+    /** Shadow's Orders - Cho'gall calls forth a Shadow elemental and absorbs the elemental into his Twilight Hammer, imbuing it with Empowered Shadows. **/
     // On Heroic Difficulty Cho'gall gains one stack of Empowered Shadows for each 10% health remaining on the elemental when it is absorbed.
     SPELL_SHADOW_ORDERS  = 87575, // Summons 47019 - Shadow Portal in 15 yards.
     SPELL_S_O_PERIODIC   = 87576, // Trigger above every 50 seconds. - NEED THIS!!!
@@ -100,13 +106,13 @@ enum Spells
 
     SPELL_ABSORB_SHADOW  = 81566, // Triggers Empowered Shadows (81194) plus visual after 3 sec (!3x3 81571 RADIUS 50k). Has a ride vehicle script eff (for lord going into hammer??).
 
-    /** Summon Corrupting Adherent – Cho'gall summons a Corrupting Adherent from one of twilight portals at the sides of the room. **/
+    /** Summon Corrupting Adherent - Cho'gall summons a Corrupting Adherent from one of twilight portals at the sides of the room. **/
     // Why two summon spells for this script effect? Here: On 25-player Heroic difficulty, Cho'gall activates both portals, summoning two Corrupting Adherents simultaneously.
     SPELL_SUM_ADHER_SE   = 81628, // Script effect with cast time - NEEDS SCRIPT!! Npc 43622 - Corrupting Adherent.
     SPELL_SUMM_ADH_1     = 81611, // First.
     SPELL_SUMM_ADH_2     = 81618, // Second.
 
-    /** Fester Blood – Cho'gall festers the blood of dead Corrupting Adherents, causing pools of Spilled Blood of the Old God to form into animated oozes (blood of the old god). 
+    /** Fester Blood - Cho'gall festers the blood of dead Corrupting Adherents, causing pools of Spilled Blood of the Old God to form into animated oozes (blood of the old god). 
         Fester Blood also causes the dark blood of any living Corrupting Adherents to boil, causing the Festering Blood effect. **/
     SPELL_FESTER_BLOOD   = 82299, // Cast by boss -> after 3 sec 82337 with script eff for Festered Blood (82333) which summons Blood of the Old God oozes - npc 43707 (from dead adh).
     SPELL_FESTERIN_BLOOD = 82914, // Living adherents use this - damage spell, triggers 82919 which is actual damage spell needs radius and script eff for applying corruption.
@@ -114,7 +120,7 @@ enum Spells
     //Phase 2 - 25 to 0 %. !! Boss retains only Fury of Cho'gall spell. !!
     SPELL_CORR_OLD_GOD   = 82361, // Visual, trigger for damage spell 82363 which needs radius and script eff to apply corruption.
 
-    /** Darkened Creations – Darkened Creations, tentacles spawned by Cho'gall, continually try to channel Debilitating Beam  (82411, H: + corruption) on a random player. **/
+    /** Darkened Creations - Darkened Creations, tentacles spawned by Cho'gall, continually try to channel Debilitating Beam  (82411, H: + corruption) on a random player. **/
     SPELL_DARK_CREAT_VIS = 82414, // Some visual dummy shit.
     SPELL_SUMM_DARK_CREA = 82433, // Actual summon spell. Npc Darkened Creation 44045.
 
@@ -137,6 +143,15 @@ enum Spells
     SPELL_VIS_SHADOWP    = 81559,
 
     SPELL_CONSUME_BLOOD  = 82630,
+
+    // Misc Chogall
+    SPELL_CORRUPTION_SICKNESS = 82235,
+    SPELL_CORRUPTION_ABSOLUTE = 82193,
+    SPELL_CORRUPTION_ABSOLUTE_TRIGGERED = 82170,
+    SPELL_CORRUPTION_MALFORMATION = 82167,
+    SPELL_CORRUPTION_MALFORMATION_TRIGGERED = 82125,
+    SPELL_CORRUPTION_SICKNESS_TRIGGERED = 81829,
+    SPELL_RIDE_VEHICLE_HARDCODED = 46598,
 
     SPELL_MALFORMATION_SHADOWBOLT = 85544 // 82151 - ex target aura worshipping, this is weird.
 };
@@ -226,7 +241,6 @@ NOTES:
     Flame / Shadow Orders rotation is made through different time of periodic trigger application. Phase 2 hits -> triggers are removed.
 */
 
-// 43324
 class boss_chogall : public CreatureScript
 {
 public:
@@ -258,7 +272,16 @@ public:
             phaseTwo = false;
             movedMid = false;
             if (instance)
+            {
                 instance->SetBossState(DATA_CHOGALL, NOT_STARTED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_SICKNESS);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_ABSOLUTE);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_ABSOLUTE_TRIGGERED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_MALFORMATION);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_MALFORMATION_TRIGGERED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_SICKNESS_TRIGGERED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_RIDE_VEHICLE_HARDCODED);
+            }
             me->ApplySpellImmune(0, IMMUNITY_ID, SPELL_FESTERIN_BLOOD, true);
 
             _Reset();
@@ -270,6 +293,7 @@ public:
 
             Talk(SAY_AGGRO);
             EnterPhaseOne();
+            me->SetDisableGravity(true);
 
             if (instance)
             {
@@ -379,6 +403,14 @@ public:
 
             if (instance)
             {
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_SICKNESS);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_ABSOLUTE);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_ABSOLUTE_TRIGGERED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_MALFORMATION);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_MALFORMATION_TRIGGERED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_CORRUPTION_SICKNESS_TRIGGERED);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_RIDE_VEHICLE_HARDCODED);
+
                 instance->SetBossState(DATA_CHOGALL, DONE);
                 instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me); // Remove
             }
@@ -398,14 +430,15 @@ public:
             Talk(RAND(SAY_KILL_1, SAY_KILL_2, SAY_KILL_3, SAY_KILL_4));
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || !phase)
                 return;
 
             if (m_uiPowerTimer <= diff)
             {
-               instance->NormaliseAltPower();
+                if(instance)
+                   instance->NormaliseAltPower();
             }
             else m_uiPowerTimer -= diff;
 
@@ -474,7 +507,7 @@ public:
                             break;
 
                         case EVENT_FURY_OF_CHOGALL:
-                            DoCastVictim(SPELL_FURY_OF_CHOGALL);
+                            DoCast(me->GetVictim(), SPELL_FURY_OF_CHOGALL);
                             events.ScheduleEvent(EVENT_FURY_OF_CHOGALL, urand(45000, 49000), PHASE_ONE);
                             break;
 
@@ -501,7 +534,7 @@ public:
                     switch (eventId)
                     {
                         case EVENT_FURY_OF_CHOGALL:
-                            DoCastVictim(SPELL_FURY_OF_CHOGALL);
+                            DoCast(me->GetVictim(), SPELL_FURY_OF_CHOGALL);
                             events.ScheduleEvent(EVENT_FURY_OF_CHOGALL, urand(45000, 49000), PHASE_TWO);
                             break;
 
@@ -541,7 +574,7 @@ class npc_blaze_chogall : public CreatureScript
 {
 public:
 
-    npc_blaze_chogall() : CreatureScript("npc_blaze_chogall") { }
+    npc_blaze_chogall() : CreatureScript("npc_blaze_chogall") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -564,7 +597,7 @@ public:
             me->DespawnOrUnsummon(25000);
         }
 
-        void UpdateAI(uint32 /*diff*/) { }
+        void UpdateAI(const uint32 diff) {}
     };
 };
 
@@ -575,7 +608,7 @@ class npc_fire_portal : public CreatureScript
 {
 public:
 
-    npc_fire_portal() : CreatureScript("npc_fire_portal") { }
+    npc_fire_portal() : CreatureScript("npc_fire_portal") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -613,7 +646,7 @@ public:
             events.ScheduleEvent(EVENT_SUMMON_FLAME_LORD, 5500);
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             events.Update(diff);
 
@@ -638,7 +671,7 @@ class npc_shadow_portal : public CreatureScript
 {
 public:
 
-    npc_shadow_portal() : CreatureScript("npc_shadow_portal") { }
+    npc_shadow_portal() : CreatureScript("npc_shadow_portal") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -676,7 +709,7 @@ public:
             events.ScheduleEvent(EVENT_SUMMON_SHADOW_LORD, 5500);
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             events.Update(diff);
 
@@ -701,7 +734,7 @@ class npc_darkened_creation : public CreatureScript
 {
 public:
 
-    npc_darkened_creation() : CreatureScript("npc_darkened_creation") { }
+    npc_darkened_creation() : CreatureScript("npc_darkened_creation") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -725,7 +758,7 @@ public:
             events.ScheduleEvent(EVENT_DEBILITATING_BEAM, 1000);
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             events.Update(diff);
 
@@ -751,7 +784,7 @@ class npc_blood_old_god : public CreatureScript
 {
 public:
 
-    npc_blood_old_god() : CreatureScript("npc_blood_old_god") { }
+    npc_blood_old_god() : CreatureScript("npc_blood_old_god") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -781,7 +814,7 @@ public:
             events.ScheduleEvent(EVENT_MELEE_INCR_CORRUPTION, 2100);
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             events.Update(diff);
 
@@ -801,8 +834,8 @@ public:
                     {
                         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
                         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
-                        me->SetSpeed(MOVE_WALK, 0.85f, true);
-                        me->SetSpeed(MOVE_RUN, 0.85f, true);
+                        me->SetSpeed(MOVE_WALK, 0.55f, true);
+                        me->SetSpeed(MOVE_RUN, 0.55f, true);
                         AttackStart(target);
                         me->AddThreat(target, 5000000.0f);
                     }
@@ -812,6 +845,7 @@ public:
                     if (Unit* target = me->GetVictim())
                         if (me->IsWithinMeleeRange(target))
                             target->SetPower(POWER_ALTERNATE_POWER, target->GetPower(POWER_ALTERNATE_POWER) + 10);
+                    events.ScheduleEvent(EVENT_MELEE_INCR_CORRUPTION, 2000);
                     break;
                 }
             }
@@ -828,7 +862,7 @@ class npc_corrupting_adherent : public CreatureScript
 {
 public:
 
-    npc_corrupting_adherent() : CreatureScript("npc_corrupting_adherent") { }
+    npc_corrupting_adherent() : CreatureScript("npc_corrupting_adherent") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -854,7 +888,7 @@ public:
             events.ScheduleEvent(EVENT_CORRUPTING_CRASH, urand(11000, 17000));
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(const uint32 diff)
         {
             if (me->HealthBelowPct(6) && !dead) // Make them look dead.
             {
@@ -911,11 +945,10 @@ public:
     {
         PrepareSpellScript(spell_summon_adherentsSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -924,7 +957,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (GetCaster()->GetMap()->IsHeroic() && GetCaster()->GetMap()->Is25ManRaid()) // Summon 2
             {
@@ -968,11 +1001,10 @@ public:
     {
         PrepareSpellScript(spell_fester_bloodSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -981,7 +1013,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             std::list<Creature*> adherents;
             GetCaster()->GetCreatureListWithEntryInGrid(adherents, NPC_CORRUPTING_ADHERENT, 300.0f);
@@ -1019,11 +1051,10 @@ public:
     {
         PrepareSpellScript(spell_depravitySpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1032,7 +1063,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (!GetHitUnit())
                 return;
@@ -1062,11 +1093,10 @@ public:
     {
         PrepareSpellScript(spell_corrupting_crashSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1075,7 +1105,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (!GetHitUnit())
                 return;
@@ -1105,11 +1135,10 @@ public:
     {
         PrepareSpellScript(spell_sprayed_corruptionSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1118,7 +1147,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (!GetHitUnit())
                 return;
@@ -1148,11 +1177,10 @@ public:
     {
         PrepareSpellScript(spell_spilled_blood_of_the_old_godSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1161,7 +1189,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (!GetHitUnit())
                 return;
@@ -1220,11 +1248,10 @@ public:
     {
         PrepareSpellScript(spell_corruption_old_godSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1242,7 +1269,7 @@ public:
                 SetHitDamage(int32(GetHitDamage() + (((GetHitDamage() / 100) * 3) * GetHitUnit()->GetPower(POWER_ALTERNATE_POWER)))); // Damage plus 3% for each 1 Corruption.
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             if (!GetHitUnit())
                 return;
@@ -1275,11 +1302,10 @@ public:
     {
         PrepareSpellScript(spell_corruption_acceleratedSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1288,7 +1314,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             GetCaster()->SetPower(POWER_ALTERNATE_POWER, GetCaster()->GetPower(POWER_ALTERNATE_POWER) + 2);
         }
@@ -1315,11 +1341,10 @@ public:
     {
         PrepareSpellScript(spell_corruption_sicknessSpellScript);
 
-        bool Validate (SpellInfo const* spellEntry)
+        bool Validate(SpellInfo const * spellEntry)
         {
-            if (!sSpellMgr->GetSpellInfo(spellEntry->Id))
+            if (!sSpellStore.LookupEntry(spellEntry->Id))
                 return false;
-
             return true;
         }
 
@@ -1328,7 +1353,7 @@ public:
             return true;
         }
 
-        void EffectScriptEffect(SpellEffIndex /*effIndex*/)
+        void EffectScriptEffect(SpellEffIndex effIndex)
         {
             GetCaster()->SetPower(POWER_ALTERNATE_POWER, GetCaster()->GetPower(POWER_ALTERNATE_POWER) + 5);
         }
@@ -1352,7 +1377,7 @@ class npc_malformation_chogall : public CreatureScript
 {
 public:
 
-    npc_malformation_chogall() : CreatureScript("npc_malformation_chogall") { }
+    npc_malformation_chogall() : CreatureScript("npc_malformation_chogall") {}
 
     CreatureAI* GetAI(Creature* creature) const 
     {
@@ -1376,7 +1401,7 @@ public:
             me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         }
 
-        void UpdateAI(uint32 diff) 
+        void UpdateAI(const uint32 diff) 
         {
             if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
                 return;
