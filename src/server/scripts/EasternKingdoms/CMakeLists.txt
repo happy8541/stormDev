@@ -256,7 +256,6 @@ set(scripts_STAT_SRCS
   EasternKingdoms/Gilneas/zone_gilneas_city1.cpp
   EasternKingdoms/Gilneas/zone_gilneas2.cpp
   EasternKingdoms/Gilneas/zone_gilneas_city3.cpp
-  EasternKingdoms/Gilneas/zone_gilneas_city2.cpp
   EasternKingdoms/Gilneas/zone_duskhaven.cpp
   EasternKingdoms/ThroneOfTheTides/boss_lady_nazjar.cpp
   EasternKingdoms/ThroneOfTheTides/boss_commander_ulthok.cpp
