@@ -336,23 +336,23 @@ class npc_matchmakerrating : public CreatureScript
 
 			if(mmr[0] > 0)
 			{
-				player->ADD_GOSSIP_ITEM(0, "Сбросить статистику 2х2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+				player->ADD_GOSSIP_ITEM(0, "ТОП бойцов 2х2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
 				if(mmr[0] > 1600)
-					player->ADD_GOSSIP_ITEM(0, "Нижен 1600 2х2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+					player->ADD_GOSSIP_ITEM(0, "Ниже 1600 2х2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
 			}
 
 			if(mmr[1] > 0)
 			{
-				player->ADD_GOSSIP_ITEM(0, "Сбросить статистику 3х3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+				player->ADD_GOSSIP_ITEM(0, "ТОП бойцов 3х3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
 				if(mmr[1] > 1500)
-					player->ADD_GOSSIP_ITEM(0, "Нижен 1500 3х3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+					player->ADD_GOSSIP_ITEM(0, "Ниже 1500 3х3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
 			}
 
 			if(mmr[2] > 0)
 			{
-				player->ADD_GOSSIP_ITEM(0, "Сбросить статистику 5х5", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
+				player->ADD_GOSSIP_ITEM(0, "ТОП бойцов 1х1", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
 				if(mmr[1] > 1400)
-					player->ADD_GOSSIP_ITEM(0, "Нижне 1500 5х5", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
+					player->ADD_GOSSIP_ITEM(0, "Ниже 1500 5х5", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
 			}
 
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "До скорой встречи", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+7);
