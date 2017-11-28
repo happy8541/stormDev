@@ -7,6 +7,18 @@ Ahbot included.
 Playerbot included.
 
 
-All reporst please make a new issues.
+All bugs - please report this repo.
+Firelands (3-6) scripted.
+DragonSoul (2-8) scripted.
+BastionOfTwilight (4-4) scripted. But sinestra needed global testing.
 
-Donate for us, thx!
+
+All Battleground working.
+
+
+
+Coded by Inc(Maksim Martynov); Declipe(Dmitriy Kuchko).
+
+
+Thx Arkcore-NG for this source. 
+And thx all TrinityCore community for source and dev.
