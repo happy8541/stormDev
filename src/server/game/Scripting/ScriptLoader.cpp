@@ -339,6 +339,7 @@ void AddSC_instance_zulgurub();
 void AddSC_zone_gilneas_duskhaven();
 void AddSC_zone_gilneas_city1();
 void AddSC_zone_gilneas2();
+void AddSC_zone_gilneas_city2();
 void AddSC_zone_gilneas_city3();
 void AddSC_zone_northern_stranglethorn();
 
@@ -1242,6 +1243,7 @@ void AddEasternKingdomsScripts()
     AddSC_zone_gilneas_city1();
     AddSC_zone_gilneas2();
 	AddSC_zone_gilneas_city3();
+	AddSC_zone_gilneas_city2();
     AddSC_zone_northern_stranglethorn();
 
 #endif
