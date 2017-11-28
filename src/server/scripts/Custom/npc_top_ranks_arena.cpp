@@ -72,16 +72,16 @@ class ArenaTeamRanks : public CreatureScript
             std::string race_s = "Unknown";
             switch (race)
             {
-                case RACE_HUMAN:            race_s = "×åëîâåê";       break;
-                case RACE_ORC:              race_s = "Îðê";         break;
-                case RACE_DWARF:            race_s = "Äâîðô";       break;
-                case RACE_NIGHTELF:         race_s = "Íî÷íîé Ýëüô";   break;
+                case RACE_HUMAN:            race_s = "Ð§ÐµÐ»Ð¾Ð²ÐµÐº";       break;
+                case RACE_ORC:              race_s = "ÐžÑ€Ðº";         break;
+                case RACE_DWARF:            race_s = "Ð”Ð²Ð¾Ñ€Ñ„";       break;
+                case RACE_NIGHTELF:         race_s = "ÐÐ¾Ñ‡Ð½Ð¾Ð¹ Ð­Ð»ÑŒÑ„";   break;
                 case RACE_UNDEAD_PLAYER:    race_s = "Undead";      break;
-                case RACE_TAUREN:           race_s = "Òàóðåí";      break;
-                case RACE_GNOME:            race_s = "Ãíîì";       break;
-                case RACE_TROLL:            race_s = "Òðîëü";       break;
-                case RACE_BLOODELF:         race_s = "Êðîâûâé Ýëüô";   break;
-                case RACE_DRAENEI:          race_s = "Äðåíåé";     break;
+                case RACE_TAUREN:           race_s = "Ð¢Ð°ÑƒÑ€ÐµÐ½";      break;
+                case RACE_GNOME:            race_s = "Ð“Ð½Ð¾Ð¼";       break;
+                case RACE_TROLL:            race_s = "Ð¢Ñ€Ð¾Ð»ÑŒ";       break;
+                case RACE_BLOODELF:         race_s = "ÐšÑ€Ð¾Ð²Ñ‹Ð²Ð¹ Ð­Ð»ÑŒÑ„";   break;
+                case RACE_DRAENEI:          race_s = "Ð”Ñ€ÐµÐ½ÐµÐ¹";     break;
             }
             return race_s;
         }
@@ -90,16 +90,16 @@ class ArenaTeamRanks : public CreatureScript
             std::string Class_s = "Unknown";
             switch (Class)
             {
-                case CLASS_WARRIOR:         Class_s = "Âîèí";        break;
-                case CLASS_PALADIN:         Class_s = "Ïàëàäèí";        break;
-                case CLASS_HUNTER:          Class_s = "Îõîòíèê";         break;
-                case CLASS_ROGUE:           Class_s = "Ðàçáîéíèê";          break;
-                case CLASS_PRIEST:          Class_s = "Æðåö";         break;
-                case CLASS_DEATH_KNIGHT:    Class_s = "Ðûöàðü Ñìåðòè";   break;
-                case CLASS_SHAMAN:          Class_s = "Øàìàí";         break;
-                case CLASS_MAGE:            Class_s = "Ìàã";           break;
-                case CLASS_WARLOCK:         Class_s = "×åðíîêíèæíèê";        break;
-                case CLASS_DRUID:           Class_s = "Äðóèä";          break;
+                case CLASS_WARRIOR:         Class_s = "Ð’Ð¾Ð¸Ð½";        break;
+                case CLASS_PALADIN:         Class_s = "ÐŸÐ°Ð»Ð°Ð´Ð¸Ð½";        break;
+                case CLASS_HUNTER:          Class_s = "ÐžÑ…Ð¾Ñ‚Ð½Ð¸Ðº";         break;
+                case CLASS_ROGUE:           Class_s = "Ð Ð°Ð·Ð±Ð¾Ð¹Ð½Ð¸Ðº";          break;
+                case CLASS_PRIEST:          Class_s = "Ð–Ñ€ÐµÑ†";         break;
+                case CLASS_DEATH_KNIGHT:    Class_s = "Ð Ñ‹Ñ†Ð°Ñ€ÑŒ Ð¡Ð¼ÐµÑ€Ñ‚Ð¸";   break;
+                case CLASS_SHAMAN:          Class_s = "Ð¨Ð°Ð¼Ð°Ð½";         break;
+                case CLASS_MAGE:            Class_s = "ÐœÐ°Ð³";           break;
+                case CLASS_WARLOCK:         Class_s = "Ð§ÐµÑ€Ð½Ð¾ÐºÐ½Ð¸Ð¶Ð½Ð¸Ðº";        break;
+                case CLASS_DRUID:           Class_s = "Ð”Ñ€ÑƒÐ¸Ð´";          break;
             }
             return Class_s;
         }
@@ -130,9 +130,9 @@ class ArenaTeamRanks : public CreatureScript
         ArenaTeamRanks() : CreatureScript("ArenaTeamRanks"){}
         
         bool OnGossipHello(Player *player, Creature *creature) {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ðåéòèíã 2õ2", GOSSIP_SENDER_MAIN, ARENA_2V2_LADDER);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ðåéòèíã 3õ3", GOSSIP_SENDER_MAIN, ARENA_3V3_LADDER);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ðåéòèíã 5õ5", GOSSIP_SENDER_MAIN, ARENA_5V5_LADDER);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ð ÐµÐ¹Ñ‚Ð¸Ð½Ð³ 2Ñ…2", GOSSIP_SENDER_MAIN, ARENA_2V2_LADDER);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ð ÐµÐ¹Ñ‚Ð¸Ð½Ð³ 3Ñ…3", GOSSIP_SENDER_MAIN, ARENA_3V3_LADDER);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ð ÐµÐ¹Ñ‚Ð¸Ð½Ð³ 5Ñ…5", GOSSIP_SENDER_MAIN, ARENA_5V5_LADDER);
             
             player->SEND_GOSSIP_MENU(ARENA_GOSSIP_HELLO, creature->GetGUID());
             
@@ -201,7 +201,7 @@ class ArenaTeamRanks : public CreatureScript
                         
                         // no team found
                         if(!result) {
-                            player->GetSession()->SendNotification("A equipe de arena nÃ£o foi encontrada.");
+                            player->GetSession()->SendNotification("A equipe de arena nÐ“Ðˆo foi encontrada.");
                             player->PlayerTalkClass->SendCloseGossip();
                             return true;
                         }
@@ -237,7 +237,7 @@ class ArenaTeamRanks : public CreatureScript
                         
                         QueryResult members = CharacterDatabase.PQuery( "SELECT  a.guid, a.personalRating, a.weekWins, a.weekGames - a.weekWins, a.seasonWins, a.seasonGames - a.seasonWins, c.name, c.race, c.class, c.level FROM arena_team_member a LEFT JOIN characters c ON c.guid = a.guid WHERE arenaTeamId = '%u' ORDER BY a.guid = '%u' DESC, a.seasonGames DESC, c.name ASC", teamId, captainGuid);
                         if(!members) {
-                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "A equipe nÃ£o tem membros.", GOSSIP_SENDER_MAIN, parentOption);
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "A equipe nÐ“Ðˆo tem membros.", GOSSIP_SENDER_MAIN, parentOption);
                         } else {
                             uint32 memberPos = 1;
                             uint32 memberCount = members->GetRowCount();
@@ -269,7 +269,7 @@ class ArenaTeamRanks : public CreatureScript
                                 buf.str(""); // clear it
                                 buf << memberPos << ". "; 
                                 if (guid == captainGuid) 
-                                    buf <<  "CapitÃ£o da Team";
+                                    buf <<  "CapitÐ“Ðˆo da Team";
                                 buf << name << ", " << getPlayerStatus(guid);
                                 
                                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
@@ -336,26 +336,26 @@ class npc_matchmakerrating : public CreatureScript
 
 			if(mmr[0] > 0)
 			{
-				player->ADD_GOSSIP_ITEM(0, "ÒÎÏ áîéöîâ 2õ2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+				player->ADD_GOSSIP_ITEM(0, "Ð¢ÐžÐŸ Ð±Ð¾Ð¹Ñ†Ð¾Ð² 2Ñ…2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
 				if(mmr[0] > 1600)
-					player->ADD_GOSSIP_ITEM(0, "Íèæå 1600 2õ2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+					player->ADD_GOSSIP_ITEM(0, "ÐÐ¸Ð¶Ðµ 1600 2Ñ…2", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
 			}
 
 			if(mmr[1] > 0)
 			{
-				player->ADD_GOSSIP_ITEM(0, "ÒÎÏ áîéöîâ 3õ3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+				player->ADD_GOSSIP_ITEM(0, "Ð¢ÐžÐŸ Ð±Ð¾Ð¹Ñ†Ð¾Ð² 3Ñ…3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
 				if(mmr[1] > 1500)
-					player->ADD_GOSSIP_ITEM(0, "Íèæå 1500 3õ3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+					player->ADD_GOSSIP_ITEM(0, "ÐÐ¸Ð¶Ðµ 1500 3Ñ…3", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
 			}
 
 			if(mmr[2] > 0)
 			{
-				player->ADD_GOSSIP_ITEM(0, "ÒÎÏ áîéöîâ 1õ1", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
+				player->ADD_GOSSIP_ITEM(0, "Ð¢ÐžÐŸ Ð±Ð¾Ð¹Ñ†Ð¾Ð² 1Ñ…1", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
 				if(mmr[1] > 1400)
-					player->ADD_GOSSIP_ITEM(0, "Íèæå 1500 5õ5", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
+					player->ADD_GOSSIP_ITEM(0, "ÐÐ¸Ð¶Ðµ 1500 5Ñ…5", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
 			}
 
-			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Äî ñêîðîé âñòðå÷è", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+7);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Ð”Ð¾ ÑÐºÐ¾Ñ€Ð¾Ð¹ Ð²ÑÑ‚Ñ€ÐµÑ‡Ð¸", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+7);
             
 			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
 			return true;
