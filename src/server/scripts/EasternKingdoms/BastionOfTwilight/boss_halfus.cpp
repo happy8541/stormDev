@@ -1,16 +1,24 @@
 /*
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2016 DeathCore <http://www.noffearrdeathproject.org/>
  *
- * - Script complete: 99%. ToDo: Behemoth flight positions for Flame Barrage.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
  *
- * This file is NOT free software. Third-party users can NOT redistribute 
- * it or modify it. If you find it, you are either hacking something, or very 
- * lucky (presuming someone else managed to hack it).
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "ScriptPCH.h"
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
-#include "ObjectMgr.h"
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
 #include "SpellAuras.h"
@@ -41,7 +49,7 @@ enum Spells
 {
     // Proto-Behemoth 
     SPELL_ROOT                               = 42716,
-    SPELL_FIREBALL                           = 86058, // Basic spell. 1.5s cast.
+	SPELL_FIREBALL                           = 86058, // Basic spell. 1.5s cast.
     SPELL_FIREBALL_TD                        = 83862, // Time Dilation. 3s cast.
 
     SPELL_SCORCHING_BREATH                   = 83707,  // Triggers 83855 which needs radius.
@@ -107,11 +115,10 @@ enum Creatures
     NPC_ORPHANED_WHELP                       = 44641
 };
 
-// 44600
 class boss_halfus : public CreatureScript
 {
     public:
-        boss_halfus() : CreatureScript("boss_halfus") { }
+        boss_halfus() : CreatureScript("boss_halfus") {}
 
         CreatureAI* GetAI(Creature* creature) const
         {
@@ -149,7 +156,7 @@ class boss_halfus : public CreatureScript
                 }
 
                 me->RemoveAllAuras();
-
+                        
                 _Reset();
             }
 
@@ -177,7 +184,7 @@ class boss_halfus : public CreatureScript
                 _EnterEvadeMode();
             }
 
-            void JustDied(Unit* /*killer*/)
+            void JustDied(Unit* killer)
             {
                 Talk(SAY_DIE);
                 summons.DespawnAll();
@@ -332,7 +339,7 @@ class boss_halfus : public CreatureScript
                 Creature* netherScion  = me->FindNearestCreature(NPC_NETHER_SCION, 500.0f, true);
                 Creature* stormRider   = me->FindNearestCreature(NPC_STORM_RIDER, 500.0f, true);
                 Creature* timeRider    = me->FindNearestCreature(NPC_TIME_RIDER, 500.0f, true);
-                //Creature* orphanWhelp  = me->FindNearestCreature(NPC_ORPHANED_WHELP, 500.0f, true);
+                Creature* orphanWhelp  = me->FindNearestCreature(NPC_ORPHANED_WHELP, 500.0f, true);
 
                 if (!me->GetMap()->IsHeroic()) // 10 possible combinations, 3 drakes randomly selected available.
                 {
@@ -428,7 +435,7 @@ class boss_halfus : public CreatureScript
                 }
             }
 
-            void UpdateAI(uint32 uiDiff)
+            void UpdateAI(const uint32 uiDiff)
             {
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -502,138 +509,124 @@ class boss_halfus : public CreatureScript
         };
 };
 
-// 44687
 class npc_proto_behemoth : public CreatureScript
 {
-    public:
-        npc_proto_behemoth() : CreatureScript("npc_proto_behemoth") { }
+public:
+	npc_proto_behemoth() : CreatureScript("npc_proto_behemoth") { }
 
-        CreatureAI* GetAI(Creature* creature) const
-        {
-            return new npc_proto_behemothAI(creature);
-        }
-            
-        struct npc_proto_behemothAI : public ScriptedAI
-        {
-            npc_proto_behemothAI(Creature* creature) : ScriptedAI(creature)
-            {
-                instance = creature->GetInstanceScript();
-            }
+	struct npc_proto_behemothAI : public ScriptedAI
+	{
+		npc_proto_behemothAI(Creature * creature) : ScriptedAI(creature)
+		{
+			me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_STUN, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_FEAR, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_ROOT, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_FREEZE, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_POLYMORPH, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_HORROR, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_SAPPED, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_CHARM, true);
+			me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_DISORIENTED, true);
+			me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CONFUSE, true);
+			pInstance = creature->GetInstanceScript();
+		}
 
-            InstanceScript* instance;
-            EventMap events;
-            bool canBarrage, canBreath;
+		InstanceScript* pInstance;
+		EventMap events;
+		void Reset()
+		{
+			if (!pInstance)
+				return;
+			me->SetCanFly(true);
+			SetCombatMovement(false);
+			me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+			me->SetMaxPower(POWER_MANA, 179000);
+			me->SetPower(POWER_MANA, 179000);
+			me->SetByteFlag(UNIT_FIELD_BYTES_1, 3, 0x02);
+			me->AddUnitMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY | MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_FLYING);
+		}
 
-            void Reset()
-            {
-                events.Reset();
+		void EnterEvadeMode()
+		{
+			me->RemoveAllAuras();
+			Reset();
+		}
 
-                if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == POINT_MOTION_TYPE)
-                    me->GetMotionMaster()->MovementExpired();
+		void EnterCombat(Unit* who)
+		{
+			if (!pInstance)
+				return;
 
-                canBarrage = false;
-                canBreath  = false;
+			me->SetByteFlag(UNIT_FIELD_BYTES_1, 3, 0x02);
+			me->AddUnitMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY | MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_FLYING);
 
-                me->GetMotionMaster()->MoveTargetedHome();
+			if (me->HasAura(SPELL_SUPERHEATED_BREATH))
+				events.ScheduleEvent(EVENT_SCORCHING_BREATH, 30000);
+			if (me->HasAura(SPELL_DANCING_FLAMES))
+				events.ScheduleEvent(EVENT_FIREBALL_BARRAGE, 20000);
+			events.ScheduleEvent(EVENT_FIREBALL, 16000);
+		}
 
-                me->SetMaxPower(POWER_MANA, 179000);
-                me->SetPower(POWER_MANA, 179000);
-                me->SetByteFlag(UNIT_FIELD_BYTES_1, 3, 0x02);
-                me->AddUnitMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY | MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_FLYING);
-            }
+		void DamageTaken(Unit* attacker, uint32 &damage)
+		{
+			if (!pInstance)
+				return;
 
-            void EnterEvadeMode()
-            {
-                me->RemoveAllAuras();
-                Reset();
-            }
+			damage = 0;
+		}
 
-            void EnterCombat(Unit* /*who*/)
-            {
-                canBarrage = false;
-                canBreath  = false;
+		void UpdateAI(const uint32 diff)
+		{
+			if (!pInstance || !UpdateVictim())
+				return;
 
-                me->SetByteFlag(UNIT_FIELD_BYTES_1, 3, 0x02);
-                me->AddUnitMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY | MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_FLYING);
+			events.Update(diff);
 
-                events.ScheduleEvent(EVENT_MOVE_UP, 500);
-                events.ScheduleEvent(EVENT_ROOT, 13000);
-                events.ScheduleEvent(EVENT_FIREBALL, 16000);
-            }
+			if (me->HasUnitState(UNIT_STATE_CASTING))
+				return;
 
-            void UpdateAI(uint32 uiDiff)
-            {
-                if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
-                    return;
+			if (Creature* Halfus = me->FindNearestCreature(NPC_HALFUS_WORMBREAKER, 500.0f, true))
+			if (!Halfus->IsInCombat())
+				me->AI()->EnterEvadeMode();
 
-                if (Creature* Halfus = me->FindNearestCreature(NPC_HALFUS_WORMBREAKER, 500.0f, true))
-                    if (!Halfus->IsInCombat())
-                        me->AI()->EnterEvadeMode();
+			while (uint32 eventId = events.ExecuteEvent())
+			{
+				switch (eventId)
+				{
+				case EVENT_FIREBALL:
+					if (Unit *target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+					{
+						if (me->HasAura(SPELL_TIME_DILATION))
+							DoCast(target, SPELL_FIREBALL_TD);
+						else
+							DoCast(target, SPELL_FIREBALL);
+					}
+					events.ScheduleEvent(EVENT_FIREBALL, urand(4000, 7000));
+					break;
+				case EVENT_FIREBALL_BARRAGE:
+					DoCast(me, SPELL_FIREBALL_BARRAGE);
+					events.ScheduleEvent(EVENT_FIREBALL_BARRAGE, urand(25000, 30000));
+					break;
+				case EVENT_SCORCHING_BREATH:
+					DoCast(me, SPELL_SCORCHING_BREATH);
+					events.ScheduleEvent(EVENT_SCORCHING_BREATH, urand(35000, 40000));
+					break;
+				default:
+						break;
+				}
+			}
 
-                if (me->HasAura(SPELL_DANCING_FLAMES) && !canBarrage)
-                {
-                    events.ScheduleEvent(EVENT_FIREBALL_BARRAGE, urand(3000, 7000));
-                    canBarrage = true;
-                }
+		}
+	};
 
-                if (me->HasAura(SPELL_SUPERHEATED_BREATH) && !canBreath)
-                {
-                    events.ScheduleEvent(EVENT_SCORCHING_BREATH, urand(3000, 7000));
-                    canBreath = true;
-                }
-
-                events.Update(uiDiff);
-
-                while (uint32 eventId = events.ExecuteEvent())
-                {
-                    switch(eventId)
-                    {
-                        case EVENT_MOVE_UP:
-                        me->SetReactState(REACT_PASSIVE);
-                        me->GetMotionMaster()->MovePoint(1, -322.578f, -680.321f, 925.3f);
-                        break;
-
-                        case EVENT_ROOT:
-                        DoCast(me, SPELL_ROOT);
-                        break;
-
-                        case EVENT_FIREBALL:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 200.0f, true))
-                        {
-                            if (!me->HasAura(SPELL_TIME_DILATION))
-                                DoCast(target, SPELL_FIREBALL);
-                            else
-                                DoCast(target, SPELL_FIREBALL_TD);
-                        }
-
-                        if (me->HasAura(SPELL_TIME_DILATION))
-                            events.ScheduleEvent(EVENT_FIREBALL, urand(18000, 25000));
-                        else                            
-                            events.ScheduleEvent(EVENT_FIREBALL, urand(4000, 7000));
-                        break;
-
-                        case EVENT_SCORCHING_BREATH:
-                        DoCast(me, SPELL_SCORCHING_BREATH);
-                        if (me->GetMap()->IsHeroic())
-                            events.ScheduleEvent(EVENT_SCORCHING_BREATH, urand(5000, 7000));
-                        else
-                            events.ScheduleEvent(EVENT_SCORCHING_BREATH, urand(7000, 9000));
-                        break;
-
-                        case EVENT_FIREBALL_BARRAGE:
-                        DoCast(me, SPELL_FIREBALL_BARRAGE);
-                        if (me->GetMap()->IsHeroic())
-                            events.ScheduleEvent(EVENT_FIREBALL_BARRAGE, urand(26000, 30000));
-                        else
-                            events.ScheduleEvent(EVENT_FIREBALL_BARRAGE, urand(30000, 34000));
-                        break;
-                    }
-                }
-            }
-        };
+	CreatureAI* GetAI(Creature* creature) const
+	{
+		return new npc_proto_behemothAI(creature);
+	}
 };
 
-// 44645 44650 44652 44797
 class npc_halfus_dragon: public CreatureScript
 {
 public:
@@ -658,7 +651,7 @@ public:
             me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         }
 
-        void EnterCombat(Unit* /*who*/)
+        void EnterCombat(Unit* pWho)
         {
             Creature* Halfus = me->FindNearestCreature(NPC_HALFUS_WORMBREAKER, 500.0f, true);
 
@@ -690,7 +683,7 @@ public:
                 Halfus->AddAura(SPELL_DRAGONS_VENGEANCE, Halfus);
         }
 
-        void UpdateAI (uint32 /*diff*/)
+        void UpdateAI (const uint32 uiDiff)
         {
             if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
                 return;
@@ -702,7 +695,7 @@ public:
         }
     };
 
-    bool OnGossipHello(Player* pPlayer, Creature* creature)
+    bool OnGossipHello (Player* pPlayer, Creature* creature)
     {
         if (!creature->HasAura(SPELL_UNRESPONSIVE_DRAGON))
         if (Creature* Halfus = creature->FindNearestCreature(NPC_HALFUS_WORMBREAKER, 500.0f, true))
@@ -756,7 +749,6 @@ public:
     }
 };
 
-// 44641
 class npc_orphaned_whelp : public CreatureScript
 {
 public:
@@ -772,6 +764,7 @@ public:
         npc_orphaned_whelpAI(Creature* creature) : ScriptedAI(creature)
         {
             instance = creature->GetInstanceScript();
+            SetCombatMovement(false);
         }
 
         InstanceScript* instance;
@@ -809,16 +802,15 @@ public:
             me->GetMotionMaster()->MoveTargetedHome();
         }
 
-        void JustDied(Unit* /*killer*/) { }
+        void JustDied(Unit* /*killer*/) {}
 
-        void UpdateAI(uint32 /*diff*/) 
+        void UpdateAI(uint32 const diff) 
         {
             DoMeleeAttackIfReady();
         }
     };
 };
 
-// 83862 86058
 class spell_proto_fireball : public SpellScriptLoader // 86058, 83862
 {
 public:
@@ -828,7 +820,7 @@ public:
     {
         PrepareSpellScript(spell_proto_fireballSpellScript);
 
-        bool Validate(SpellInfo const* /*spellInfo*/)
+        bool Validate(SpellInfo const * spellEntry)
         {
             return true;
         }
@@ -838,7 +830,7 @@ public:
             return true;
         }
 
-        void HandleDummy(SpellEffIndex /*effIndex*/)
+        void HandleDummy(SpellEffIndex effIndex)
         {
             if (GetCaster()->HasAura(SPELL_TIME_DILATION))
             {
@@ -858,13 +850,12 @@ public:
         }
     };
 
-    SpellScript *GetSpellScript() const
+    SpellScript* GetSpellScript() const
     {
         return new spell_proto_fireballSpellScript();
     }
 };
 
-// 83719
 class spell_proto_fireball_barrage : public SpellScriptLoader // 83719.
 {
 public:
@@ -874,7 +865,7 @@ public:
     {
         PrepareSpellScript(spell_proto_fireball_barrageSpellScript);
 
-        bool Validate(SpellInfo const* /*spellInfo*/)
+        bool Validate(SpellInfo const * spellEntry)
         {
             return true;
         }
@@ -884,7 +875,7 @@ public:
             return true;
         }
 
-        void HandleDummy(SpellEffIndex /*effIndex*/)
+        void HandleDummy(SpellEffIndex effIndex)
         {
             GetCaster()->CastSpell(GetCaster()->GetVictim(), SPELL_FIREBALL_BARRAGE_DAMAGE_TD, false);
         }
@@ -895,13 +886,12 @@ public:
         }
     };
 
-    SpellScript *GetSpellScript() const
+    SpellScript* GetSpellScript() const
     {
         return new spell_proto_fireball_barrageSpellScript();
     }
 };
 
-// 83603 84593
 class spell_halfus_stone_touch: public SpellScriptLoader { // 84593.
 public:
     spell_halfus_stone_touch() : SpellScriptLoader("spell_halfus_stone_touch") { }
@@ -913,9 +903,15 @@ public:
         void HandleEffectPeriodic(AuraEffect const * /*aurEff*/) 
         {
             if (GetId() == 83603)
-                GetTarget()->CastSpell(GetTarget(),84030,true);
+            {
+                if (urand(0,1) == 1) // 50% chance.
+                    GetTarget()->CastSpell(GetTarget(),84030,true);
+            }
             else if (GetId() == 84593)
-                GetTarget()->CastSpell(GetTarget(),84591,true);
+            {
+                if (urand(0,1) == 1) // 50% chance.
+                    GetTarget()->CastSpell(GetTarget(),84591,true);
+            }
         }
 
         void Register() 
@@ -924,13 +920,12 @@ public:
         }
     };
 
-    AuraScript *GetAuraScript() const 
+    AuraScript* GetAuraScript() const
     {
         return new spell_halfus_stone_touch_AuraScript();
     }
 };
 
-// 205087
 class go_halfus_whelp_cage : public GameObjectScript
 {
     public:
