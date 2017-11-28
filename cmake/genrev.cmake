@@ -59,8 +59,8 @@ else()
     message(STATUS "
     Could not find a proper repository signature (hash) - you may need to pull tags with git fetch -t
     Continuing anyway - note that the versionstring will be set to \"unknown 1970-01-01 00:00:00 (Archived)\"")
-    set(rev_date "27.11.2017 03:33:21 +4.3.4")
-    set(rev_hash "Arquivado")
+    set(rev_date "28.11.2017 21:07:21 +4.3.4")
+    set(rev_hash "StormDev")
     set(rev_branch "Master")
   else()
     # Extract information required to build a proper versionstring
