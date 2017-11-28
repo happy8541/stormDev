@@ -207,7 +207,7 @@ enum Npc
     NPC_SHADOW_ORB           = 49863, // Responsible for twilight slicer
     NPC_PULSATING_EGG        = 46842,
     NPC_TWILIGHT_ESSENCE     = 48018, // Spawned by twilight drake on death
-    NPC_TWILIGHT_WHELPS      = 47265,
+    NPC_TWILIGHT_WHELPS1     = 47265,
     NPC_TWILIGHT_SPITE       = 48415, // No target, casts one spell only
     NPC_TWILIGHT_DRAKE       = 48436, // Summoned from Eggs - Targets Calen
     NPC_CALEN                = 46277, // Phase 2. He casts 51744 on himself
@@ -525,7 +525,7 @@ public:
                                     if (!Side)
                                     {
                                         for (int i = 0; i < 5; i++)
-                                            me->SummonCreature(NPC_TWILIGHT_WHELPS, WhelpsLocations[i].GetPositionX(),
+                                            me->SummonCreature(NPC_TWILIGHT_WHELPS1, WhelpsLocations[i].GetPositionX(),
                                                     WhelpsLocations[i].GetPositionY(),
                                                     WhelpsLocations[i].GetPositionZ(),
                                                     WhelpsLocations[i].GetOrientation(), TEMPSUMMON_CORPSE_DESPAWN,
@@ -535,7 +535,7 @@ public:
                                     else
                                     {
                                         for (int i = 0; i < 5; i++)
-                                            me->SummonCreature(NPC_TWILIGHT_WHELPS, WhelpsLocations2[i].GetPositionX(),
+                                            me->SummonCreature(NPC_TWILIGHT_WHELPS1, WhelpsLocations2[i].GetPositionX(),
                                                     WhelpsLocations2[i].GetPositionY(),
                                                     WhelpsLocations2[i].GetPositionZ(),
                                                     WhelpsLocations2[i].GetOrientation(), TEMPSUMMON_CORPSE_DESPAWN,
@@ -777,24 +777,24 @@ class npc_twilight_drake: public CreatureScript
 /*********************
  ** NPC Twilight Whelp (47265) - Phase 1 Adds.
  **********************/
-class npc_twilight_whelp: public CreatureScript
+class npc_twilight_whelp1: public CreatureScript
 {
     public:
 
-        npc_twilight_whelp() :
-                CreatureScript("npc_twilight_whelp")
+        npc_twilight_whelp1() :
+                CreatureScript("npc_twilight_whelp1")
         {
         }
 
         CreatureAI* GetAI(Creature* creature) const
         {
-            return new npc_twilight_whelpAI(creature);
+            return new npc_twilight_whelp1AI(creature);
         }
 
-        struct npc_twilight_whelpAI: public ScriptedAI
+        struct npc_twilight_whelp1AI: public ScriptedAI
         {
 
-                npc_twilight_whelpAI(Creature * creature) :
+                npc_twilight_whelp1AI(Creature * creature) :
                         ScriptedAI(creature)
                 {
                     instance = creature->GetInstanceScript();
@@ -1564,7 +1564,7 @@ void AddSC_boss_sinestra()
     new npc_twilight_essence();
     new npc_twilight_slicer();
     new npc_twilight_drake();
-    new npc_twilight_whelp();
+    new npc_twilight_whelp1();
     new npc_twilight_spite();
     new npc_calen();
     new npc_controller();
