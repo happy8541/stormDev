@@ -166,7 +166,7 @@ public:
 		if (!player || !me)
 			return true;
 
-		if (sWorld->getBoolConfig(CONFIG_ARENA_1V1_ENABLE) == false)
+		if (sWorld->getBoolConfig(CONFIG_ARENA_1V1_ENABLE) == true)
 		{
 			ChatHandler(player->GetSession()).SendSysMessage("Арена не доступна!");
 			return true;
@@ -284,7 +284,7 @@ public:
 
 		case 8: // Script Info
 		{
-			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "TER-Server крови", GOSSIP_SENDER_MAIN, uiAction);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Stormscale.Ru Cataclysm Russian Server", GOSSIP_SENDER_MAIN, uiAction);
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Участие на Арене 1 на 1", GOSSIP_SENDER_MAIN, uiAction);
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Просто зарегестрируйся на участие", GOSSIP_SENDER_MAIN, uiAction);
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "<-- Вернуться назад", GOSSIP_SENDER_MAIN, 7);
