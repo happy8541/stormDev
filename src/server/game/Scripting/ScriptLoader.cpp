@@ -372,13 +372,6 @@ void AddSC_westfall();
 void AddSC_wetlands();
 
 // Kalimdor
-void AddSC_boss_mannoroth();
-void AddSC_boss_perotharn();
-void AddSC_boss_queen_azshara();
-void AddSC_instance_well_of_eternity();
-void AddSC_well_of_eternity();
-void AddSC_well_of_eternity_teleport();
-
 void AddSC_blackfathom_deeps();              //Blackfathom Depths
 void AddSC_boss_gelihast();
 void AddSC_boss_kelris();
@@ -1261,12 +1254,6 @@ void AddEasternKingdomsScripts()
 void AddKalimdorScripts()
 {
 #ifdef SCRIPTS
-    AddSC_boss_mannoroth();
-    AddSC_boss_perotharn();
-    AddSC_boss_queen_azshara();
-    AddSC_instance_well_of_eternity();
-    AddSC_well_of_eternity();
-    AddSC_well_of_eternity_teleport();
     AddSC_blackfathom_deeps();              //Blackfathom Depths
     AddSC_boss_gelihast();
     AddSC_boss_kelris();

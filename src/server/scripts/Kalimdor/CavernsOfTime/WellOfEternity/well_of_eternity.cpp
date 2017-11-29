@@ -937,7 +937,7 @@ public:
         case NPC_ABYSSAL:
         case NPC_VAROTHEN:
         case NPC_DOOMGUARD:
-            if (creature->IsAlive())
+            if (creature->Alive())
                 creature->Respawn(true);
             break;
         }
@@ -977,7 +977,7 @@ public:
             GetCreatureListWithEntryInGrid(creatures, me, me->GetEntry(), 500.0f);
             if (!creatures.empty())
                 for (std::list<Creature*>::const_iterator itr = creatures.begin(); itr != creatures.end(); ++itr)
-                    if ((*itr)->IsInCombat())
+                    if ((*itr)->InCombat())
                         (*itr)->AI()->AttackStart(who);
         }
 

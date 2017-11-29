@@ -79,11 +79,6 @@ set(scripts_STAT_SRCS
   Kalimdor/CavernsOfTime/TheBlackMorass/the_black_morass.cpp
   Kalimdor/CavernsOfTime/TheBlackMorass/boss_aeonus.cpp
   Kalimdor/CavernsOfTime/TheBlackMorass/boss_temporus.cpp
-  Kalimdor/CavernsOfTime/WellOfEternity/boss_mannoroth.cpp
-  Kalimdor/CavernsOfTime/WellOfEternity/boss_perotharn.cpp
-  Kalimdor/CavernsOfTime/WellOfEternity/boss_queen_azshara.cpp
-  Kalimdor/CavernsOfTime/WellOfEternity/instance_well_of_eternity.cpp
-  Kalimdor/CavernsOfTime/WellOfEternity/well_of_eternity_teleport.cpp
   Kalimdor/CavernsOfTime/WellOfEternity/well_of_eternity.cpp
   Kalimdor/CavernsOfTime/WellOfEternity/well_of_eternity.h
   Kalimdor/BlackfathomDeeps/boss_kelris.cpp
