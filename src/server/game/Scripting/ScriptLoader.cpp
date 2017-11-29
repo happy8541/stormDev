@@ -522,6 +522,8 @@ void AddSC_boss_oggleflint();
 void AddSC_boss_jergosh_the_invoker();
 void AddSC_boss_bazzalan();
 
+void AddSC_well_of_eternity();       //Well Of Eternity
+
 void AddSC_ashenvale();
 void AddSC_azshara();
 void AddSC_zone_azuremyst_isle();
@@ -1401,6 +1403,8 @@ void AddKalimdorScripts()
     AddSC_boss_oggleflint();
     AddSC_boss_jergosh_the_invoker();
     AddSC_boss_bazzalan();
+	
+	AddSC_well_of_eternity();       //Well Of Eternity
 
     AddSC_ashenvale();
     AddSC_azshara();
