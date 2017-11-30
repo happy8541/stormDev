@@ -1,20 +1,11 @@
 /*
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
- * Copyright (C) 2006-2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2017 Stormscale.Ru Russian Community.
+ * 
+ * 
+ * Zulgurub complete.
+ * 
+ * 
+ * 
  */
 
 #ifndef DEF_ZULGURUB_H
@@ -37,9 +28,12 @@ enum DataTypes
     DATA_RENATAKI                   = 6,
     DATA_WUSHOOLAY                  = 7,
     DATA_GRILEK                     = 8,
+    DATA_BEAM_TRIGGER               = 9,
 
     // Jin'do the Godbreaker
-    DATA_JINDOR_TRIGGER,
+    DATA_JINDOR_TRIGGER             = 10,
+    DATA_POSITION_ID                = 11,
+    DATA_TIKI_MASK_ID               = 12,
 };
 
 enum CreatureIds
@@ -58,12 +52,31 @@ enum CreatureIds
 
     // Bloodlord Mandokir
     NPC_CHAINED_SPIRIT              = 52156,
+    NPC_HAKKAR_CHAINS               = 52430,
     NPC_OHGAN                       = 52157,
 
     // Jin'do the Godbreaker
     NPC_JINDO_TRIGGER               = 52150,
     NPC_SPIRIT_OF_HAKKAR            = 52222,
-    NPC_SHADOW_OF_HAKKAR            = 52650
+    NPC_SHADOW_OF_HAKKAR            = 52650,
+
+    NPC_GAS_CLOUD                   = 52062,
+    NPC_HAKKAR_RIFT                 = 52400,
+    NPC_MADNESS_CONTROLLER          = 91004,
+    NPC_TROLL_ARTIFACT_STAND        = 52452,
+    NPC_ELF_ARTIFACT_STAND          = 52450,
+    NPC_DWARF_ARTIFACT_STAND        = 52446,
+    NPC_TROLL_ARTIFACT_SUM          = 52453,
+    NPC_ELF_ARTIFACT_SUM            = 52451,
+    NPC_DWARF_ARTIFACT_SUM          = 52449,
+    NPC_CAVE_IN_TRIGGER             = 52387,
+
+    // Venoxis
+    NPC_GENERAL_PURPOSE_BUNNY       = 45979,
+    NPC_POOL_OF_ACID_TEARS          = 52197,
+    NPC_BLOOD_VENOM                 = 52525,
+    NPC_VENOMOOUS_EFFUSION          = 52288,
+
 };
 
 enum GameObjectIds
@@ -89,9 +102,13 @@ enum GameObjectIds
 };
 
 template<class AI>
-AI* GetZulGurubAI(Creature* creature)
+CreatureAI* GetZulGurubAI(Creature* creature)
 {
-    return GetInstanceAI<AI>(creature, ZGScriptName);
+    if (InstanceMap* instance = creature->GetMap()->ToInstanceMap())
+        if (instance->GetInstanceScript())
+            if (instance->GetScriptId() == sObjectMgr->GetScriptId(ZGScriptName))
+                return new AI(creature);
+    return NULL;
 }
 
 #endif
