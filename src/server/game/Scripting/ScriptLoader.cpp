@@ -372,6 +372,7 @@ void AddSC_westfall();
 void AddSC_wetlands();
 
 // Kalimdor
+void AddSC_espinaca_alamuerte();
 void AddSC_boss_mannoroth();
 void AddSC_boss_perotharn();
 void AddSC_boss_queen_azshara();
@@ -1260,6 +1261,7 @@ void AddEasternKingdomsScripts()
 void AddKalimdorScripts()
 {
 #ifdef SCRIPTS
+    AddSC_espinaca_alamuerte();
     AddSC_boss_mannoroth();
     AddSC_boss_perotharn();
     AddSC_boss_queen_azshara();
