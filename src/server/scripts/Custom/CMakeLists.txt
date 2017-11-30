@@ -8,27 +8,11 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+file(GLOB_RECURSE sources_Custom Custom/*.cpp Custom/*.h)
+
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
-
-Custom/anti_divulgador.cpp
-Custom/npc_morph.cpp
-Custom/npc_visual_weapon.cpp
-Custom/duelReset.cpp
-Custom/npc_titulos.cpp
-Custom/npc_top_ranks_arena.cpp
-Custom/comando_shop.cpp
-Custom/npc_arena1v1.cpp
-Custom/ico.cpp
-Custom/gm_hello.cpp
-Custom/morph.cpp
-Custom/announcer_boss.cpp
-Custom/ArenaFastStart.cpp
-Custom/killstreake.cpp
-Custom/npc_info.cpp
-Custom/npc_other.cpp
-Custom/npc_teleporter.cpp
-
+  ${sources_Custom}
 )
 
 message("  -> Prepared: Custom")
