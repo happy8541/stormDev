@@ -1,0 +1,1 @@
+﻿UPDATE `creature_template` SET `ScriptName` = 'boss_venoxis' WHERE `entry` = '52155';
