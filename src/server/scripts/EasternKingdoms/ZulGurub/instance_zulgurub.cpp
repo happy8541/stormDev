@@ -1,24 +1,18 @@
 /*
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
- * Copyright (C) 2006-2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
+ * Copyright (C) 2017 Stormscale.Ru Russian Community.
+ * Instance ZulGurub
+ * script complete %100
+ * 
+ * 
+ * 
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+*/
+
+
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
+#include "UnitAI.h"
 #include "zulgurub.h"
 
 DoorData const doorData[] =
@@ -29,6 +23,16 @@ DoorData const doorData[] =
     { GO_ZANZIL_DOOR,                   DATA_ZANZIL,    DOOR_TYPE_ROOM, BOUNDARY_NONE },
     //{ GO_THE_CACHE_OF_MADNESS_DOOR,     DATA_xxxxxxx,   DOOR_TYPE_ROOM, BOUNDARY_NONE },
     { 0,                                0,              DOOR_TYPE_ROOM, BOUNDARY_NONE }
+};
+
+const Position TikiTorchSP[6]=
+{
+    {-11933.2f, -1824.54f, 51.7838f, 1.53589f},
+    {-11919.8f, -1824.58f, 51.4590f, 1.53589f},
+    {-11903.5f, -1824.38f, 51.5542f, 1.51844f},
+    {-11879.6f, -1824.81f, 50.8839f, 1.46608f},
+    {-11864.6f, -1824.44f, 51.1218f, 1.50098f},
+    {-11849.5f, -1824.58f, 51.4813f, 1.55334f},
 };
 
 class instance_zulgurub : public InstanceMapScript
@@ -42,19 +46,40 @@ class instance_zulgurub : public InstanceMapScript
             {
                 SetBossNumber(EncounterCount);
                 LoadDoorData(doorData);
+            }
+
+             uint64 venoxisGUID;
+             uint64 mandokirGUID;
+             uint64 kilnaraGUID;
+             uint64 zanzilGUID;
+             uint64 jindoGUID;
+             uint64 hazzarahGUID;
+             uint64 renatakiGUID;
+             uint64 wushoolayGUID;
+             uint64 grilekGUID;
+             uint64 jindoTiggerGUID;
+             uint8 tikiMaskId;			
+
+            void Initialize()
+            {
                 venoxisGUID         = 0;
                 mandokirGUID        = 0;
                 kilnaraGUID         = 0;
                 zanzilGUID          = 0;
-                jindoGUID           = 0;
                 hazzarahGUID        = 0;
                 renatakiGUID        = 0;
                 wushoolayGUID       = 0;
                 grilekGUID          = 0;
-                jindoTiggerGUID     = 0;
-            }
+                jindoTiggerGUID     = 0;			   
+                jindoGUID           = 0;
+                tikiMaskId          = 0;
 
-            void OnCreatureCreate(Creature* creature) override
+                for (int i = 0; i < 6; ++i)
+                    if (Creature* torch = instance->SummonCreature(52419, TikiTorchSP[i]))
+                        torch->GetAI()->SetData(DATA_POSITION_ID, i);
+            }
+			
+            void OnCreatureCreate(Creature* creature)
             {
                 switch (creature->GetEntry())
                 {
@@ -93,7 +118,7 @@ class instance_zulgurub : public InstanceMapScript
                 }
             }
 
-            void OnGameObjectCreate(GameObject* go) override
+            void OnGameObjectCreate(GameObject* go)
             {
                 switch (go->GetEntry())
                 {
@@ -109,7 +134,7 @@ class instance_zulgurub : public InstanceMapScript
                 }
             }
 
-            void OnGameObjectRemove(GameObject* go) override
+            void OnGameObjectRemove(GameObject* go)
             {
                 switch (go->GetEntry())
                 {
@@ -125,7 +150,7 @@ class instance_zulgurub : public InstanceMapScript
                 }
             }
 
-            bool SetBossState(uint32 type, EncounterState state) override
+            bool SetBossState(uint32 type, EncounterState state)
             {
                 if (!InstanceScript::SetBossState(type, state))
                     return false;
@@ -149,25 +174,37 @@ class instance_zulgurub : public InstanceMapScript
                 return true;
             }
 
-            /*
-            void SetData(uint32 type, uint32 data) override
+            void SetData(uint32 type, uint32 data)
             {
                 switch (type)
                 {
+                    case DATA_TIKI_MASK_ID:
+                        {
+                            switch (data)
+                            {
+                                case IN_PROGRESS:
+                                    ++tikiMaskId;
+                                    break;
+                                case NOT_STARTED:
+                                    tikiMaskId = 0;
+                                    break;
+                            }
+                        }
+                        break;
                 }
             }
 
-            uint32 GetData(uint32 type) const override
+            uint32 GetData(uint32 type) const
             {
                 switch (type)
                 {
+                    case DATA_TIKI_MASK_ID:              return tikiMaskId;
                 }
 
                 return 0;
             }
-            */
 
-            uint64 GetData64(uint32 type) const override
+            uint64 GetData64(uint32 type) const
             {
                 switch (type)
                 {
@@ -198,7 +235,7 @@ class instance_zulgurub : public InstanceMapScript
                 return 0;
             }
 
-            std::string GetSaveData() override
+            std::string GetSaveData()
             {
                 OUT_SAVE_INST_DATA;
 
@@ -209,7 +246,7 @@ class instance_zulgurub : public InstanceMapScript
                 return saveStream.str();
             }
 
-            void Load(char const* str) override
+            void Load(char const* str)
             {
                 if (!str)
                 {
@@ -242,20 +279,9 @@ class instance_zulgurub : public InstanceMapScript
                 OUT_LOAD_INST_DATA_COMPLETE;
             }
 
-        protected:
-             uint64 venoxisGUID;
-             uint64 mandokirGUID;
-             uint64 kilnaraGUID;
-             uint64 zanzilGUID;
-             uint64 jindoGUID;
-             uint64 hazzarahGUID;
-             uint64 renatakiGUID;
-             uint64 wushoolayGUID;
-             uint64 grilekGUID;
-             uint64 jindoTiggerGUID;
         };
 
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
+        InstanceScript* GetInstanceScript(InstanceMap* map) const
         {
             return new instance_zulgurub_InstanceMapScript(map);
         }
