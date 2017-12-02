@@ -30,3 +30,8 @@ INSERT INTO `arkcore_string` (`entry`, `content_default`) VALUES ('29245', 'Stor
  DELETE FROM creature_addon WHERE guid=62699;
  DELETE FROM creature_addon WHERE guid=63066;
  DELETE FROM creature_addon WHERE guid=63077;
+ 
+ /* Insert NEW spells in WORLD */
+ INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES ('96914', 'spell_zanzili_fire');
+ INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES ('96338', 'spell_zanzils_graveyard_gas');
+ 
