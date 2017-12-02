@@ -16,3 +16,17 @@ UPDATE `creature_template` SET `AIName`='SmartAI' WHERE (`entry`='42452')
 ВНИМАНИЕ: Ренейм строчки, или-же ее отсутсвие приведет к крашу клиента!
 */
 INSERT INTO `arkcore_string` (`entry`, `content_default`) VALUES ('29245', 'Stormscale.Ru Cataclysm WoW-Emulator');
+
+
+
+/* Delete unusing creature_addos */
+ DELETE FROM creature_addon WHERE guid=61351;
+ DELETE FROM creature_addon WHERE guid=61471;
+ DELETE FROM creature_addon WHERE guid=61806;
+ DELETE FROM creature_addon WHERE guid=62114;
+ DELETE FROM creature_addon WHERE guid=62555;
+ DELETE FROM creature_addon WHERE guid=62656;
+ DELETE FROM creature_addon WHERE guid=62687;
+ DELETE FROM creature_addon WHERE guid=62699;
+ DELETE FROM creature_addon WHERE guid=63066;
+ DELETE FROM creature_addon WHERE guid=63077;
