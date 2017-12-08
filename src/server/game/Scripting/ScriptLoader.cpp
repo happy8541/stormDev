@@ -44,6 +44,7 @@ void AddSC_holiday_spell_scripts();
 void AddSC_guild_spell_scripts();
 
 void AddSC_SmartSCripts();
+void AddSC_event_npc();
 
 //TeleNPC2
 void AddSC_npc_teleport();
@@ -1840,6 +1841,7 @@ void AddCustomScripts()
     /* This is where custom scripts should be added. */
 
     // TeleNPC2
+    AddSC_event_npc();
     AddSC_npc_teleport();
     AddSC_CdReset();
     AddSC_morphs_npc();
