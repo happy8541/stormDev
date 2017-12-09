@@ -855,7 +855,7 @@ void AddSC_zangarmarsh();
 void AddSC_boss_corborus();         //StoneCore
 void AddSC_boss_slabhide();
 void AddSC_boss_ozruk();
-void AddSC_boss_azil();
+void AddSC_boss_high_priestess_azil();
 void AddSC_stonecore();
 void AddSC_instance_stonecore();
 void AddSC_zone_kezan();
@@ -1755,7 +1755,7 @@ void AddMaelstromScripts()
     AddSC_boss_corborus();       //StoneCore
     AddSC_boss_slabhide();
     AddSC_boss_ozruk();
-    AddSC_boss_azil();
+    AddSC_boss_high_priestess_azil();
     AddSC_stonecore();
     AddSC_instance_stonecore();
     AddSC_zone_kezan();

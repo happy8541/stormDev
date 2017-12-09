@@ -66,7 +66,14 @@ enum CreatureIds
     NPC_EARTHWARDEN_YRSA           = 50048,
     NPC_STONECORE_TELEPORTER1      = 51396,
     NPC_STONECORE_TELEPORTER2      = 51397,
-};
+    NPC_THRASHING_CHARGE           = 43743,
+    
+
+    // misc npc
+    
+    NPC_WORLDTRIGGER               = 22515,
+}; 
+
 
 enum GameObjectIds
 {
