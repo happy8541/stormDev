@@ -222,60 +222,6 @@ public:
     };
 };
 
-// Rock Borer AI
-class npc_rock_borer : public CreatureScript
-{
-public:
-    npc_rock_borer() : CreatureScript("npc_rock_borer") { }
-
-    CreatureAI* GetAI(Creature* creature) const
-    {
-        return new npc_rock_borerAI(creature);
-    }
-
-    struct npc_rock_borerAI : public ScriptedAI
-    {
-        npc_rock_borerAI(Creature* creature) : ScriptedAI(creature) { }
-
-        EventMap events;
-
-        void Reset()
-        {
-            events.Reset();
-        }
-
-        void EnterCombat(Unit* /*who*/)
-        {
-            events.ScheduleEvent(EVENT_ROCK_BORE, 1000);
-        }
-
-        void UpdateAI(uint32 diff)
-        {
-            if (!UpdateVictim())
-                return;
-
-            events.Update(diff);
-
-            if (me->HasUnitState(UNIT_STATE_CASTING))
-                return;
-
-            while (uint32 eventId = events.ExecuteEvent())
-            {
-                switch (eventId)
-                {
-                    case EVENT_ROCK_BORE:
-                        if (Unit *target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                            DoCast(target, SPELL_ROCK_BORE);
-                        events.RescheduleEvent(EVENT_ROCK_BORE, 1000);
-                        return;
-                }
-            }
-
-            DoMeleeAttackIfReady();
-        }
-    };
-};
-
 // Millhouse Manastorm AI
 class npc_millhouse_manastorm_sc : public CreatureScript
 {
@@ -358,5 +304,4 @@ void AddSC_stonecore()
     new npc_crystalspawn_giant();
     new npc_impp();
     new npc_millhouse_manastorm_sc();
-    new npc_rock_borer;
 }
