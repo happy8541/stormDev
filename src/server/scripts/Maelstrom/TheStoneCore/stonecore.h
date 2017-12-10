@@ -26,6 +26,13 @@ enum Data
     DATA_OZRUK_EVENT,
     DATA_HIGH_PRIESTESS_AZIL_EVENT,
     DATA_TEAM_IN_INSTANCE,
+ // DATA_CORBOUSS_MILLHOUSE_ADD
+    DATA_MILLHOUSE_MANASTORM,
+    DATA_MILLHOUSE_EVENT_FACE,
+    DATA_HANDLE_CORBORUS_ROCKDOOR,
+    DATA_MILLHOUSE_EVENT_KNOCKBACK,
+    DATA_MILLHOUSE_EVENT_DESPAWN,
+
 };
 
 enum Data64
@@ -34,6 +41,8 @@ enum Data64
     DATA_SLABHIDE,
     DATA_OZRUK,
     DATA_HIGH_PRIESTESS_AZIL,
+
+   
 };
 
 enum CreatureIds
@@ -72,7 +81,14 @@ enum CreatureIds
     // misc npc
     
     NPC_WORLDTRIGGER               = 22515,
+    
 }; 
+
+enum SCMisc
+{
+ ACTION_CORBORUS_INTRO,
+
+};
 
 
 enum GameObjectIds
