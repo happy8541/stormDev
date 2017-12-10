@@ -47,6 +47,7 @@ void AddSC_SmartSCripts();
 void AddSC_event_npc();
 
 //TeleNPC2
+void AddSC_Mod_Tournaments();
 void AddSC_npc_teleport();
 void AddSC_CdReset();
 void AddSC_morphs_npc();
@@ -1841,6 +1842,7 @@ void AddCustomScripts()
     /* This is where custom scripts should be added. */
 
     // TeleNPC2
+    AddSC_Mod_Tournaments();
     AddSC_event_npc();
     AddSC_npc_teleport();
     AddSC_CdReset();
