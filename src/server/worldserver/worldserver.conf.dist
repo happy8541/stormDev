@@ -3452,5 +3452,36 @@ Item.Disable2             = 1
 Item.Disable3             = 1
 Item.Disable4             = 1
 Item.Disable5             = 0
+###################################################################################################
+# TOURNAMENTS SYSTEM
+#
+#    Tournaments.Enable
+#        Description: Enable Disable Tournaments System.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Tournaments.Enable = 1
+
+#    Tournaments.Debug
+#        Description: Debug mode for Tournaments System.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Tournaments.Debug = 1
+
+#    Tournaments.Ladder
+#        Description: Enable/Disable Ladder system for Tournaments. (1..2..3..levels, die: reset)
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Tournaments.Ladder = 1
+
+#    Tournaments.LadderText
+#        Description: Trinity string for organizer gossip menu (default: "[%u] Next level").
+#        Default:     0
+
+Tournaments.LadderText = 0
+
+#
 #
 ###################################################################################################
