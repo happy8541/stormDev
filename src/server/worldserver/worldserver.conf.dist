@@ -1,5 +1,5 @@
 ################################################
-# ArkCORE World Server configuration file      #
+# Stormscale.Ru WoW Emulator 4.3.4 Cataclysm   #
 ################################################
 [worldserver]
 
@@ -65,7 +65,7 @@ RealmID = 1
 #        Example:     "@prefix@/share/arkcore"
 #        Default:     "."
 
-DataDir = "."
+DataDir = "/opt/server/stormscaledevcore/data"
 
 #
 #    LogsDir
@@ -74,7 +74,7 @@ DataDir = "."
 #                     Logs directory must exists, or log file creation will be disabled.
 #        Default:     "" - (Log files will be stored in the current path)
 
-LogsDir = ""
+LogsDir = "/opt/server/stormscaledevcore/logs"
 
 #
 #    LoginDatabaseInfo
@@ -87,13 +87,13 @@ LogsDir = ""
 #                                                                 section my.ini)
 #                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
 #                                                                           Unix/Linux)
-#        Default:     "127.0.0.1;3306;arkania;arkania;auth"       - (LoginDatabaseInfo)
-#                     "127.0.0.1;3306;arkania;arkania;world"      - (WorldDatabaseInfo)
-#                     "127.0.0.1;3306;arkania;arkania;characters" - (CharacterDatabaseInfo)
+#        Default:     "127.0.0.1;3306;root;root;auth"       - (LoginDatabaseInfo)
+#                     "127.0.0.1;3306;root;root;world"      - (WorldDatabaseInfo)
+#                     "127.0.0.1;3306;root;root;characters" - (CharacterDatabaseInfo)
 
-LoginDatabaseInfo     = "127.0.0.1;3306;arkania;arkania;auth"
-WorldDatabaseInfo     = "127.0.0.1;3306;arkania;arkania;world"
-CharacterDatabaseInfo = "127.0.0.1;3306;arkania;arkania;characters"
+LoginDatabaseInfo     = "127.0.0.1;3306;stormscaleroot;stormscaledev;authstorm"
+WorldDatabaseInfo     = "127.0.0.1;3306;stormscaleroot;stormscaledev;stdbworld"
+CharacterDatabaseInfo = "127.0.0.1;3306;stormscaleroot;stormscaledev;charactersstorm"
 
 #
 #    LoginDatabase.WorkerThreads

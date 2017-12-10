@@ -1,5 +1,5 @@
 ###############################################
-# ArkCORE Auth Server configuration file #
+# Stormscale.Ru WoW Emulator 4.3.4 Cataclysm  #
 ###############################################
 [authserver]
 
@@ -37,7 +37,7 @@
 #                     Logs directory must exists, or log file creation will be disabled.
 #        Default:     "" - (Log files will be stored in the current path)
 
-LogsDir = ""
+LogsDir = "/opt/server/stormscaledevcore/authstorm.log"
 
 #
 #    MaxPingTime
@@ -67,7 +67,7 @@ BindIP = "0.0.0.0"
 #        Example:     "./authserver.pid"  - (Enabled)
 #        Default:     ""                  - (Disabled)
 
-PidFile = ""
+PidFile = "/opt/server/stormscaledevcore/authstorm.pid"
 
 #
 #    UseProcessors
@@ -137,7 +137,7 @@ WrongPass.BanType = 0
 #                                                                           Unix/Linux)
 #        Default:     "127.0.0.1;3306;arkania;arkania;auth"
 
-LoginDatabaseInfo = "127.0.0.1;3306;arkania;arkania;auth"
+LoginDatabaseInfo = "127.0.0.1;3306;stormscaleroot;stormscaledev;authstorm"
 
 #
 #    LoginDatabase.WorkerThreads
