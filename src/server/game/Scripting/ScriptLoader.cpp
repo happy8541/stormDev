@@ -1818,6 +1818,7 @@ void AddBattlegroundScripts()
 void AddSC_Ingame_commandscript();
 void AddSC_Title_gossip_codebox();
 void AddSC_arenateamranks();
+void AddSC_npc_promo_pve();
 
     
 
@@ -1858,6 +1859,7 @@ void AddCustomScripts()
     AddSC_npc_titles();
     AddSC_npc_other();
     AddSC_npc_info(); 
+	AddSC_npc_promo_pve();
     //AddSC_Killstreak();
     //AddSC_fast_arena_start();
     AddSC_Boss_Announcer();

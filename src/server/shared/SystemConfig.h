@@ -25,7 +25,7 @@
 #include "Define.h"
 #include "revision.h"
 
-#define _PACKAGENAME "Stormscale Cataclysm Core 4.3.4 Rev 3 with STDB434.03"
+#define _PACKAGENAME "Stormscale Cataclysm Core 4.3.4 Rev 4 with STDB434.04"
 
 #if TRINITY_ENDIAN == TRINITY_BIGENDIAN
 # define _ENDIAN_STRING "big-endian"
