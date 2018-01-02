@@ -1,5 +1,5 @@
-# Copyright (C) 2011-2016 ArkCORE <http://www.arkania.net/>
-# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2017-2018 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) Stormscale.Ru Cataclysm WoW-Emulator 4.3.4 With custom Code.
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
