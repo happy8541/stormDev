@@ -3,6 +3,7 @@ SDName: npc_reputation
 SD%Complete: 100%
 SDComment: Wotlk/Cataclysm npc_reputation
 SDCategory: Custom NPC Script
+Stormscale.Ru WoW-emulator 4.3.4 cataclysm Main DEV Inc.
 EndScriptData */
 
 //Includes
@@ -18,10 +19,10 @@ class npc_reputation : public CreatureScript
 
                 bool OnGossipHello(Player *player, Creature *_creature)
                 {
-                        if (player->isInCombat())
+                        if (player->IsInCombat())
                         {
                                 player->CLOSE_GOSSIP_MENU();
-                                _creature->MonsterWhisper("Combat!", player->GetGUID());
+                                _creature->MonsterWhisper("Вы находитесь в бою!" ,0 , player->GetGUID());
                         return true;
                         }
                 else
@@ -34,9 +35,9 @@ class npc_reputation : public CreatureScript
                 return true;
                 }
 
-                bool GiveReputation(Player *player, unsigned int repID, unsigned int repAMOUNT)
+                bool GiveReputation(Player *player, unsigned int factionentry, unsigned int repAMOUNT)
                 {
-                        player->GetReputationMgr().ModifyReputation(sFactionStore.LookupEntry(repID), repAMOUNT);
+                        player->GetReputationMgr().GetReputation(sFactionStore.LookupEntry(factionentry) , repAMOUNT);
                         player->CastSpell(player,SPELL_REPUTATION,false);
 
                 player->CLOSE_GOSSIP_MENU();
@@ -45,10 +46,10 @@ class npc_reputation : public CreatureScript
 
                 bool OnGossipSelect(Player *player, Creature *_creature, uint32 sender, uint32 uiAction)
                 {
-                    if (player->isInCombat())
+                    if (player->IsInCombat())
                     {
                                 player->CLOSE_GOSSIP_MENU();
-                                _creature->MonsterWhisper("Combat !", player->GetGUID());
+                                _creature->MonsterWhisper("Вы находитесь в бою!" ,0 , player->GetGUID());
                                 return true;
                    }
                     if (sender == GOSSIP_SENDER_MAIN)
@@ -118,325 +119,325 @@ class npc_reputation : public CreatureScript
                          case 100: //hm
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                return GiveReputation(player, 1037, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 101: //Explorers' League
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1068, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 102: //The Frostborn
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1126, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 103: //The Silver Covenant
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1094, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 104: //Valiance Expedition
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1050, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 105: //Horde Expedition
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1052, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 106: //The Hand of Vengeance
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1067, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 107: //The Sunreavers
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1124, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 108: //The Taunka
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1064, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 109: //Warsong Offensive
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1085, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 110: //Argent Crusade
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1106, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 111: //Frenzyheart Tribe
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1104, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 112: //Kirin Tor
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1090, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 113: //Knights of the Ebon Blade
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1098, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 114: //The Kalu'ak
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1073, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 115: //The Oracles
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1105, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 116: //The Sons of Hodir
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1119, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 117: //The Wyrmrest Accord
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1091, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 118: //The Ashen Verdict
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1156, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 98: //Baradin's Wardens
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1177, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 97: //Wildhammer Clan
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1174, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 202: //Dragonmaw Clan
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1172, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 203: //Hellscream's Reach
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1178, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 204: //Guardians of Hyjal
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1158, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 205: //Ramkahen
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1173, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 206: //The Earthen Ring
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1135, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 break;
                          case 207: //Therazane
                                 if (player->GetMoney() < 10000000)
                                 {
-                                _creature->MonsterSay("Nemas dostatek goldu." ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("У Вас недостаточно золота." ,0 , player->GetGUID());
                                 }
                                 else
                                 {
                                 return GiveReputation(player, 1171, 90999);
                                player->ModifyMoney(-10000000);
-                                _creature->MonsterSay("Dakujem za obchod :) / Thank for bussines :)" ,0 , player->GetGUID());
+                                _creature->MonsterWhisper("Репутация выдана, спасибо за покупку!" ,0 , player->GetGUID());
                                 } 
 
 break;
